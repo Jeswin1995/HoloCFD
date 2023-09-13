@@ -1,0 +1,97 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2212                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      meshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+maxCellSize     0.01;
+
+surfaceFile     "HE.stl";
+
+localRefinement
+{
+    inlet
+    {
+	cellSize 0.005;
+    }
+    outlet
+    {
+	cellSize 0.005;
+    }
+}
+
+renameBoundary
+{
+    newPatchNames
+    {      	
+    	symmetry
+    	{
+        	newName         symmetry;
+		type            symmetry;
+    	}
+
+    	pipe
+    	{
+        	newName         pipe;        	
+		type            wall;
+    	}
+		
+    	inlet
+    	{
+        	newName         inlet;
+        	type            inlet;
+    	}
+
+    	outlet
+    	{
+        	newName         outlet;
+        	type            outlet;
+    	}
+	
+    }
+}
+
+boundaryLayers
+{
+    optimiseLayer 	1;	// 1: activate, 0: deactivate
+    untangleLayers	1; 	// 1: activate, 0: deactivate
+
+    optimisationParameters
+    { 
+	nSmoothNormals	3;	// number of iterations for reducing normal variation
+	maxNumIterations 5;	// max number of iterations for optimisation procedure
+	featureSizeFactor 0.4;	// ratio between max layer thickness and estimated feature size
+	reCalculateNormals 1; 	// 1: activate, 0: deactivate, calculation of normals
+	relThicknessTol 0.1;	// maximum allowed thickness variation between neighbouring points (normalized by point distance)
+    }
+
+    patchBoundaryLayers
+    {
+        wall
+        {
+            allowDiscontinuity  0;
+            nLayers             5;
+            thicknessRatio      1.2;
+        }
+	pipe
+        {
+            allowDiscontinuity  0;
+            nLayers             5;
+            thicknessRatio      1.2;
+        }
+    }
+}
+
+// ************************************************************************* //

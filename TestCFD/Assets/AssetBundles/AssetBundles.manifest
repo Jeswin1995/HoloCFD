@@ -1,0 +1,10 @@
+ManifestFileVersion: 0
+CRC: 3678869924
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: metadata
+      Dependencies: {}
+    Info_1:
+      Name: velocity_reference
+      Dependencies: {}
