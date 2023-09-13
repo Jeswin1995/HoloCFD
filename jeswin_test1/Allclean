@@ -1,7 +1,0 @@
-#!/bin/sh
-cd "${0%/*}" || exit                                # Run from this directory
-WM_PROJECT_DIR=/usr/lib/openfoam/openfoam2212  # Set the WM_PROJECT_DIR
-. ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions      # Tutorial clean functions
-#------------------------------------------------------------------------------
-cleanCase
-#------------------------------------------------------------------------------
