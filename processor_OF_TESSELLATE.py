@@ -76,7 +76,7 @@ path_unityfor = os.getcwd() + '/' + 'process/'
 
 #define total number of timesteps (1 for steady-state solutions)
 #timestep_sim = int(input ('Total number of timesteps (1 for steady-state): ')) #uncomment for specifiying 
-timestep_sim = 5
+timestep_sim = 2
 #obtain a list of timesteps with values
 animationScene1 = GetAnimationScene() 
 tsteps = animationScene1.TimeKeeper.TimestepValues

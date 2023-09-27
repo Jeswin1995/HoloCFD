@@ -11,8 +11,8 @@ router.post("/", async (req, res) => {
         message: "No file uploaded",
       });
     } else if (req.files.assetbundles.length == undefined) {
-      //Use the name of the input field (i.e. "assetbundles") to retrieve the uploaded file
-      let assetbundles = req.files.assetbundles;
+      //Use the name of the input field (i.e. "ABs") to retrieve the uploaded file
+      let ABs = req.files.assetbundles;
 
       //Use the mv() method to place the file in upload directory (i.e. "uploads")
       assetbundles.mv(__dirname + "/../ABs/" + assetbundles.name);
