@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 public class InstantiateFBX : MonoBehaviour
 {
-    string assetName = "untitled.glb";
+    string assetName = "reference_velocity.py_timestep1_.glb";
     string defaultLineMaterialName = "Default-Line";
     string saveTo = "";
     AssetBundle Bundle;

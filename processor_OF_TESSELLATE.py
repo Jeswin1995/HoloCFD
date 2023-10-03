@@ -64,7 +64,7 @@ export_format_paraview = '.' + exportParaview
 import_format_blender = export_format_paraview
 #data format to export visual CFD data from Blender: fbx, obj, 3ds, ply, stl and other supported formats
 #(optional) exportBlender = input ('Enter the export format Blender: ')
-exportBlender = 'fbx'
+exportBlender = 'glb'
 export_format_blender = '.' + exportBlender
 
 #create a directory to collect processed data and metadata
@@ -76,7 +76,7 @@ path_unityfor = os.getcwd() + '/' + 'process/'
 
 #define total number of timesteps (1 for steady-state solutions)
 #timestep_sim = int(input ('Total number of timesteps (1 for steady-state): ')) #uncomment for specifiying 
-timestep_sim = 2
+timestep_sim = 3
 #obtain a list of timesteps with values
 animationScene1 = GetAnimationScene() 
 tsteps = animationScene1.TimeKeeper.TimestepValues
@@ -88,7 +88,7 @@ for x in range(0, timestep_sim):
     SaveScreenshot(path_paraview + str(x) + '.png', renderView1, ImageResolution=[1025, 782])
     #switch to the next timestep
     animationScene1 = GetAnimationScene() 
-    animationScene1.GoToNext()
+    animationScene1.AnimationTime = tsteps[-1]
     #blender starts metadata import & export
     path_to_obj_dir = os.path.join(path_blender)
     #get list of all files in directory
@@ -115,17 +115,32 @@ for x in range(0, timestep_sim):
     # Get a reference to the current active scene
     scene = bpy.context.scene
 
-    # Loop through all objects in the scene
     for obj in scene.objects:
         bpy.ops.object.select_all(action='DESELECT') #to deselect all meshes
         # Select the current object
-        obj.select_set(True)
-        #print(obj.name)
-        #export object with its name as file name
-        if timestep_sim >1:
-            bpy.ops.export_scene.fbx(filepath=path_blender + obj.name + str(statefile) + '_timestep' + str(x+1) + '_time' + str(tsteps[x]) + '_' + export_format_blender,use_selection=True,)
-        else:
-            bpy.ops.export_scene.fbx(filepath=path_blender + obj.name + str(statefile) + '_timestep1_' + export_format_blender,use_selection=True,)    
+
+        # Check if the object name starts with "Shape_IndexedFaceSet"
+        #if obj.name.startswith("Shape_IndexedFaceSet"):
+        if obj.name != "Cube":
+            # Select the object
+            obj.select_set(True)
+            print(obj.name)
+    if timestep_sim >1:
+        bpy.ops.export_scene.gltf(filepath=path_blender  + str(statefile) + '_timestep' + str(x+1) + '_time' + str(tsteps[x]) + '_' + export_format_blender, export_format='GLB', export_selected=True,export_tangents=True,export_draco_mesh_compression_enable=False,)
+    else:
+        bpy.ops.export_scene.gltf(filepath=path_blender  + str(statefile) + '_timestep1_' + export_format_blender, export_format='GLB', export_selected=True,export_tangents=True,export_draco_mesh_compression_enable=False,)    
+
+    # # Loop through all objects in the scene
+    # for obj in scene.objects:
+    #     bpy.ops.object.select_all(action='DESELECT') #to deselect all meshes
+    #     # Select the current object
+    #     obj.select_set(True)
+    #     #print(obj.name)
+    #     #export object with its name as file name
+    #     if timestep_sim >1:
+    #         bpy.ops.export_scene.gltf(filepath=path_blender + obj.name + str(statefile) + '_timestep' + str(x+1) + '_time' + str(tsteps[x]) + '_' + export_format_blender,export_format='GLB',)
+    #     else:
+    #         bpy.ops.export_scene.gltf(filepath=path_blender + obj.name + str(statefile) + '_timestep1_' + export_format_blender,export_format='GLB',)    
 stop2 = timeit.default_timer()   
 
 """
