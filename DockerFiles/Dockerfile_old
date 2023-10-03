@@ -1,0 +1,50 @@
+# Use the official Ubuntu 20.04 as the base image
+FROM ubuntu:20.04
+
+# Set environment variables
+ENV DEBIAN_FRONTEND noninteractive
+
+# Update the package repository and install necessary dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    wget \
+    ca-certificates \
+    gnupg \
+    lsb-release \
+    libxt6 \
+    libgl1-mesa-glx \
+    xfce4 xfce4-goodies \
+    x11vnc \
+    xvfb \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install OpenFOAM
+RUN wget -O - http://dl.openfoam.org/gpg.key | apt-key add -
+RUN sh -c "echo deb http://dl.openfoam.org/ubuntu $(lsb_release -cs) main > /etc/apt/sources.list.d/openfoam.list"
+RUN apt-get update && apt-get install -y --no-install-recommends openfoam8
+
+# Install ParaView
+RUN apt-get update && apt-get install -y --no-install-recommends paraview
+
+# Install Node.js
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
+RUN apt-get install -y npm
+
+# Install Node-RED
+RUN npm install -g --unsafe-perm node-red
+
+# Install TigerVNC server
+RUN apt-get update && apt-get install -y --no-install-recommends tigervnc-standalone-server tigervnc-xorg-extension tigervnc-viewer
+RUN mkdir -p ~/.vnc
+RUN x11vnc -storepasswd password ~/.vnc/passwd
+
+# Expose the default Node-RED port and VNC port
+EXPOSE 1880
+EXPOSE 5900
+
+# Set the working directory to /root
+WORKDIR /root
+
+# Start Xvfb, VNC server, and Node-RED when the container launches
+CMD Xvfb :1 -screen 0 1024x768x16 & x11vnc -display :1 -usepw -forever & DISPLAY=:1 node-red

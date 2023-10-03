@@ -1,0 +1,44 @@
+solid symmetry
+facet normal -0.999696 -0.018455 0.016335
+outer loop
+vertex -0.000000 0.210797 -0.999555
+vertex 0.001631 0.210797 -0.899715
+vertex 0.000000 0.299030 -0.899876
+endloop
+endfacet
+facet normal -1.000000 -0.000000 0.000000
+outer loop
+vertex -0.000000 0.210797 -0.999555
+vertex 0.000000 0.299030 -0.899876
+vertex -0.000000 0.299030 -0.999555
+endloop
+endfacet
+facet normal -0.999696 0.018447 -0.016335
+outer loop
+vertex 0.000000 -0.206004 -0.007569
+vertex 0.001631 -0.206004 -0.107409
+vertex 0.000000 -0.294271 -0.107248
+endloop
+endfacet
+facet normal -1.000000 -0.000000 0.000000
+outer loop
+vertex 0.000000 -0.206004 -0.007569
+vertex 0.000000 -0.294271 -0.107248
+vertex 0.000000 -0.294237 -0.007569
+endloop
+endfacet
+facet normal 1.000000 -0.000000 0.000000
+outer loop
+vertex -0.000000 -0.250000 -1.005000
+vertex 0.000000 0.250000 -1.005000
+vertex 0.000000 0.250000 0.000000
+endloop
+endfacet
+facet normal 1.000000 -0.000000 0.000000
+outer loop
+vertex -0.000000 -0.250000 -1.005000
+vertex 0.000000 0.250000 0.000000
+vertex -0.000000 -0.250000 0.000000
+endloop
+endfacet
+endsolid symmetry

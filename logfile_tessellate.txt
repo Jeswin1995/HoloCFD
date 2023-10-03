@@ -1,5 +1,102 @@
 Data processing is in progress...
+Light
+Camera
+Viewpoint
+DirectLight
+DirectLight.001
+DirectLight.002
+DirectLight.003
+DirectLight.004
+Shape_IndexedFaceSet
+'C:\Users\XR-Lab\.conda\envs\Acrossim\2.82\python\lib\site-packages\extern_draco.dll' does not exist, draco mesh compression not available
+11:39:23 | INFO: Starting glTF 2.0 export
+11:39:23 | INFO: Extracting primitive: Shape_IndexedFaceSet
+11:39:27 | INFO: Primitives created: 1
+11:39:28 | INFO: Finished glTF 2.0 export in 4.999234914779663 s
+
+Light
+Camera
+Viewpoint
+DirectLight
+DirectLight.001
+DirectLight.002
+DirectLight.003
+DirectLight.004
+Shape_IndexedFaceSet
+Viewpoint.001
+DirectLight.005
+DirectLight.006
+DirectLight.007
+DirectLight.008
+DirectLight.009
+Shape_IndexedFaceSet.001
+Viewpoint.002
+DirectLight.010
+DirectLight.011
+DirectLight.012
+DirectLight.013
+DirectLight.014
+Shape_IndexedFaceSet.002
+'C:\Users\XR-Lab\.conda\envs\Acrossim\2.82\python\lib\site-packages\extern_draco.dll' does not exist, draco mesh compression not available
+11:39:30 | INFO: Starting glTF 2.0 export
+11:39:30 | INFO: Extracting primitive: Shape_IndexedFaceSet.002
+11:39:34 | INFO: Primitives created: 1
+11:39:35 | INFO: Finished glTF 2.0 export in 4.944406509399414 s
+
+Light
+Camera
+Viewpoint
+DirectLight
+DirectLight.001
+DirectLight.002
+DirectLight.003
+DirectLight.004
+Shape_IndexedFaceSet
+Viewpoint.001
+DirectLight.005
+DirectLight.006
+DirectLight.007
+DirectLight.008
+DirectLight.009
+Shape_IndexedFaceSet.001
+Viewpoint.002
+DirectLight.010
+DirectLight.011
+DirectLight.012
+DirectLight.013
+DirectLight.014
+Shape_IndexedFaceSet.002
+Viewpoint.003
+DirectLight.015
+DirectLight.016
+DirectLight.017
+DirectLight.018
+DirectLight.019
+Shape_IndexedFaceSet.003
+Viewpoint.004
+DirectLight.020
+DirectLight.021
+DirectLight.022
+DirectLight.023
+DirectLight.024
+Shape_IndexedFaceSet.004
+Viewpoint.005
+DirectLight.025
+DirectLight.026
+DirectLight.027
+DirectLight.028
+DirectLight.029
+Shape_IndexedFaceSet.005
+'C:\Users\XR-Lab\.conda\envs\Acrossim\2.82\python\lib\site-packages\extern_draco.dll' does not exist, draco mesh compression not available
+11:39:37 | INFO: Starting glTF 2.0 export
+11:39:37 | INFO: Extracting primitive: Shape_IndexedFaceSet.005
+11:39:41 | INFO: Primitives created: 1
+11:39:42 | INFO: Finished glTF 2.0 export in 4.905664920806885 s
+
 *****Data processing performance & analytics*****
-Time_ParaView:  2.721049
-Time_ParaView_Blender:  1.1898277
-Time_Integration (sec):  3.9108767
+Time_ParaView:  2.9124653
+X3D file size in bytes: 8780052
+Time_ParaView_Blender:  21.329773799999998
+Time_Integration (sec):  24.2422391
+Data processing has successfully been completed!
+Metadata is available under the process directory.
