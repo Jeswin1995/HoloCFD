@@ -10,9 +10,10 @@ public class MeasurementPublisher : MonoBehaviour
     {
         mqttReceiver = GetComponent<mqttReceiver>();
     }
-    public void publishMessage(string msg)
+    public void publishMessage(string msg1,string msg2)
     {
-        mqttReceiver.messagePublish = msg;
+        mqttReceiver.topicPublish = msg1;
+        mqttReceiver.messagePublish = msg2;
         mqttReceiver.Publish();
     }
 }

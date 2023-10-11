@@ -33,14 +33,8 @@ boundaryField
 
     pipe
     {
-        type            fixedValue;	// pipe has constant T 
-        value           uniform 500;
-    }
-		
-    inlet
-    {
-        type            fixedValue;	// fluid at inlet has constant T
-        value           uniform 300;
+        type            fixedValue;    // pipe has constant T
+        value           uniform    500;
     }
 
     outlet
