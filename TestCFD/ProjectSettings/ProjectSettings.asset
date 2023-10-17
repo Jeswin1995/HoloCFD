@@ -136,7 +136,11 @@ PlayerSettings:
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
   bundleVersion: 0.1
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 11400000, guid: 3ff5ca8bfa4e6304c8ff0e31b841c714, type: 2}
+  - {fileID: 6542937511333553318, guid: 94a6a4b227d31bb42bea0dc7e8debac2, type: 2}
+  - {fileID: 11400000, guid: ba2d53f4c0695a347ab04ec33a064152, type: 2}
+  - {fileID: 421057610213602484, guid: 9b0dc1a2baf3b814bbecbf986da2a141, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -623,7 +627,7 @@ PlayerSettings:
   webGLPowerPreference: 2
   scriptingDefineSymbols:
     Android: USE_INPUT_SYSTEM_POSE_CONTROL;USE_INPUT_SYSTEM_POSE_CONTROL
-    Standalone: USE_INPUT_SYSTEM_POSE_CONTROL;USE_INPUT_SYSTEM_POSE_CONTROL
+    Standalone: USE_INPUT_SYSTEM_POSE_CONTROL
     Windows Store Apps: USE_INPUT_SYSTEM_POSE_CONTROL;MRTK_GLTF_IMPORTER_OFF
   additionalCompilerArguments: {}
   platformArchitecture: {}
@@ -680,7 +684,10 @@ PlayerSettings:
   platformCapabilities:
     WindowsStoreApps:
       GazeInput: True
+      MusicLibrary: True
+      InternetClientServer: True
       SpatialPerception: True
+      PicturesLibrary: True
       InternetClient: True
       WebCam: True
       Microphone: True

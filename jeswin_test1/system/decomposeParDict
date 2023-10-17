@@ -1,0 +1,51 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2212                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      decomposeParDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+numberOfSubdomains 8; // Change this to the desired number of subdomains
+
+method          scotch; // Other methods include scotch, hierarchical, etc.
+
+// Optional settings for the simple decomposition method
+simpleCoeffs
+{
+    n (2 2 2); // Number of subdomains in X, Y, and Z directions
+    delta 0.001; // Minimum decomposition thickness
+}
+
+// Settings for the hierarchical decomposition method (if used)
+// hierarchicalCoeffs
+// {
+//     n (2 2 1); // Number of subdomains in X, Y, and Z directions
+//     order xyz;
+//     roots ( );
+// }
+
+// Optional settings for the scotch decomposition method (if used)
+//scotchCoeffs
+//{
+//    strategy metis;
+//    np 6;
+//}
+
+// Optional settings for the manual decomposition method (if used)
+// manualCoeffs
+// {
+//     dataFile "cellDecomposition";
+// }
+
+// ************************************************************************* //

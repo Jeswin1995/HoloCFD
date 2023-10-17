@@ -42,7 +42,7 @@ SIMPLE
     residualControl
     {
         p_rgh           1e-2;
-        U               1e-4;
+        U               1e-2;
         T               1e-2;
 
         // possibly check turbulence fields
@@ -63,6 +63,8 @@ relaxationFactors
         "(k|epsilon|R)" 0.7;
     }
 }
+
+
 
 
 // ************************************************************************* //

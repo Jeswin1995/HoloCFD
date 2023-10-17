@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/TestglTF.unity
+    guid: 303685bddb3217646bb5968decbfcc46
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 748675bc78fa6b649a306af6970f5999, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 3ff5ca8bfa4e6304c8ff0e31b841c714, type: 2}

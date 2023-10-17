@@ -67,10 +67,12 @@ for item in obj_list:
     print('GLB file sizes in bytes:',size_processing_blender)
     size_file_blender.append(size_processing_blender)
     shutil.copy(path_to_file, os.getcwd() + '/' + 'ExpressServer/ABs/')
+    cloud_path = r"Z:\TestCFD"
+    shutil.copy(path_to_file, cloud_path)
 
 print('Data processing has successfully been completed!')
 
-#clean up metadata
+#clean up metadata 
 #metadata = input ('Clean all metadata? [y or n]: ')
 metadata = "y"
 mypath = path_paraview

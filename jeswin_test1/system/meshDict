@@ -16,7 +16,7 @@ FoamFile
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-maxCellSize     0.01;
+maxCellSize     0.05;
 
 surfaceFile     "HE.stl";
 
