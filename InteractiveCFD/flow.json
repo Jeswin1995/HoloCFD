@@ -1,0 +1,1208 @@
+[
+    {
+        "id": "3e745e36ff578044",
+        "type": "tab",
+        "label": "mainflow",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b1813a83246977f7",
+        "type": "tab",
+        "label": "MQTT_communication",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8ec4a383b2d52912",
+        "type": "tab",
+        "label": "Cloud",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f633a238518a1779",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "37c13e56269242e19d8de5a4f509ac68.s2.eu.hivemq.cloud",
+        "port": "8883",
+        "tls": "",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "5",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "3e23a6fd421c4e41",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt-dashboard.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ad4a3b3c95053afd",
+        "type": "nextcloud-credentials",
+        "cname": "",
+        "address": "https://cloud.tuhh.de/",
+        "insecure": false
+    },
+    {
+        "id": "bd5a391d566dae34",
+        "type": "webdav-credentials",
+        "cname": "",
+        "address": "https://cloud.tuhh.de",
+        "basePath": "remote.php/webdav/files/",
+        "insecure": false
+    },
+    {
+        "id": "f03ecbd9c5722524",
+        "type": "inject",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "840dd2f7c1175677"
+            ]
+        ]
+    },
+    {
+        "id": "840dd2f7c1175677",
+        "type": "exec",
+        "z": "3e745e36ff578044",
+        "command": " docker start openfoam",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "docker start",
+        "x": 330,
+        "y": 80,
+        "wires": [
+            [],
+            [],
+            [
+                "05ec4df4693454af"
+            ]
+        ]
+    },
+    {
+        "id": "ed8821db4f41d5f4",
+        "type": "debug",
+        "z": "3e745e36ff578044",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "05ec4df4693454af",
+        "type": "exec",
+        "z": "3e745e36ff578044",
+        "command": "docker exec -w /data/jeswin_test1 openfoam bash -c \"source /usr/lib/openfoam/openfoam2212/etc/bashrc && ./Allrun\"",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "true",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Allrun",
+        "x": 490,
+        "y": 80,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "de2bf0a639f4a6bb",
+        "type": "inject",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1220,
+        "y": 260,
+        "wires": [
+            [
+                "4547cff9c1cb21fc"
+            ]
+        ]
+    },
+    {
+        "id": "4547cff9c1cb21fc",
+        "type": "exec",
+        "z": "3e745e36ff578044",
+        "command": "docker exec -w /data/jeswin_test1 openfoam bash -c \"source /usr/lib/openfoam/openfoam2212/etc/bashrc && ./Allclean\"",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "true",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Allclean",
+        "x": 1260,
+        "y": 80,
+        "wires": [
+            [
+                "842eff4626a04586"
+            ],
+            [
+                "842eff4626a04586"
+            ],
+            [
+                "842eff4626a04586"
+            ]
+        ]
+    },
+    {
+        "id": "73c2b586b8127f37",
+        "type": "mqtt in",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "topic": "sim_start",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "3e23a6fd421c4e41",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 140,
+        "wires": [
+            [
+                "840dd2f7c1175677"
+            ]
+        ]
+    },
+    {
+        "id": "70ef5a014ed94e05",
+        "type": "mqtt in",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "topic": "sim_clean",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "3e23a6fd421c4e41",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1180,
+        "y": 200,
+        "wires": [
+            [
+                "4547cff9c1cb21fc"
+            ]
+        ]
+    },
+    {
+        "id": "d9da75269833ea55",
+        "type": "mqtt in",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "topic": "sim_process",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "3e23a6fd421c4e41",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 530,
+        "y": 260,
+        "wires": [
+            [
+                "f04603a7df5a3291"
+            ]
+        ]
+    },
+    {
+        "id": "573230bd4a09471a",
+        "type": "debug",
+        "z": "3e745e36ff578044",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "2b8070528304fc34",
+        "type": "inject",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 560,
+        "wires": [
+            [
+                "9553e3877d11dee8"
+            ]
+        ]
+    },
+    {
+        "id": "bc3a1460f7d6551b",
+        "type": "debug",
+        "z": "3e745e36ff578044",
+        "name": "debug 18",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "8817e98c1c3c63a2",
+        "type": "debug",
+        "z": "3e745e36ff578044",
+        "name": "debug 19",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "9553e3877d11dee8",
+        "type": "exec",
+        "z": "3e745e36ff578044",
+        "command": "docker exec -w /data/jeswin_test1 openfoam bash -c \"source /usr/lib/openfoam/openfoam2212/etc/bashrc && cartesianMesh\" ",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "true",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Cartesian_MESH",
+        "x": 310,
+        "y": 560,
+        "wires": [
+            [
+                "ed8821db4f41d5f4"
+            ],
+            [
+                "bc3a1460f7d6551b"
+            ],
+            [
+                "8817e98c1c3c63a2"
+            ]
+        ]
+    },
+    {
+        "id": "842eff4626a04586",
+        "type": "debug",
+        "z": "3e745e36ff578044",
+        "name": "debug 20",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1500,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "f04603a7df5a3291",
+        "type": "exec",
+        "z": "3e745e36ff578044",
+        "command": "cd \"C:/Users/XR-Lab/Documents/Jeswin Files/Project HoloCFD/openfoamdocker\" && conda run -n Acrossim python TesselateParaview.py",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "TesselateParaview",
+        "x": 750,
+        "y": 80,
+        "wires": [
+            [],
+            [],
+            [
+                "02488c6ed8f21066"
+            ]
+        ]
+    },
+    {
+        "id": "02488c6ed8f21066",
+        "type": "exec",
+        "z": "3e745e36ff578044",
+        "command": "cd \"C:/Users/XR-Lab/Documents/Jeswin Files/Project HoloCFD/openfoamdocker\" && \"C:\\Program Files\\Blender Foundation\\Blender 3.5\\3.5\\python\\bin\\python.exe\" TesselateBlender.py",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "TesselateParaview",
+        "x": 970,
+        "y": 80,
+        "wires": [
+            [
+                "573230bd4a09471a"
+            ],
+            [
+                "573230bd4a09471a"
+            ],
+            [
+                "573230bd4a09471a"
+            ]
+        ]
+    },
+    {
+        "id": "ded2f3eb09cd4e45",
+        "type": "inject",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 540,
+        "y": 200,
+        "wires": [
+            [
+                "f04603a7df5a3291"
+            ]
+        ]
+    },
+    {
+        "id": "828dd417b6a6f6d2",
+        "type": "file in",
+        "z": "b1813a83246977f7",
+        "name": "Control Dict",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\system\\controlDict",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "ascii",
+        "allProps": false,
+        "x": 450,
+        "y": 80,
+        "wires": [
+            [
+                "7f02617ebdc947a3"
+            ]
+        ]
+    },
+    {
+        "id": "5428e9701f58b742",
+        "type": "file",
+        "z": "b1813a83246977f7",
+        "name": "ControlDictnew",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\system\\controlDict",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "ascii",
+        "x": 1080,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a1a69f10ab8fd174",
+        "type": "debug",
+        "z": "b1813a83246977f7",
+        "name": "debug 23",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "275cb72ee28bb4e1",
+        "type": "function",
+        "z": "b1813a83246977f7",
+        "name": "function 7",
+        "func": "// Assuming msg.payload contains the content of the file\n// Set the \"endTime\" value to 300\nvar endTime = msg.payload.endTime;\n\n\nvar modifiedContent = msg.payload.sim_control.replace(/endTime\\s+[\\d.-]+;/, \"endTime   \" + endTime + \";\");\n\n\n\n\n// Update the payload with the modified content\nmsg.payload = modifiedContent;\n\n// Return the modified content\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 80,
+        "wires": [
+            [
+                "5428e9701f58b742"
+            ]
+        ]
+    },
+    {
+        "id": "7f02617ebdc947a3",
+        "type": "join",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 630,
+        "y": 180,
+        "wires": [
+            [
+                "275cb72ee28bb4e1",
+                "a1a69f10ab8fd174"
+            ]
+        ]
+    },
+    {
+        "id": "39f6e8991010dbb7",
+        "type": "mqtt in",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "topic": "sim_control",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "3e23a6fd421c4e41",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 100,
+        "wires": [
+            [
+                "99e6c9439da7a22b",
+                "828dd417b6a6f6d2"
+            ]
+        ]
+    },
+    {
+        "id": "99e6c9439da7a22b",
+        "type": "function",
+        "z": "b1813a83246977f7",
+        "name": "function 8",
+        "func": "msg.topic = \"endTime\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 180,
+        "wires": [
+            [
+                "7f02617ebdc947a3"
+            ]
+        ]
+    },
+    {
+        "id": "f0803b9e3e86372c",
+        "type": "file in",
+        "z": "b1813a83246977f7",
+        "name": "T",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\0\\T",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "ascii",
+        "allProps": false,
+        "x": 430,
+        "y": 340,
+        "wires": [
+            [
+                "befdf71b5f23619e"
+            ]
+        ]
+    },
+    {
+        "id": "f5eb9e2ceebcd5b8",
+        "type": "file",
+        "z": "b1813a83246977f7",
+        "name": "Tnew",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\0\\T",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "ascii",
+        "x": 990,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3c46d6026487e354",
+        "type": "debug",
+        "z": "b1813a83246977f7",
+        "name": "debug 24",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "add5523ed62a065e",
+        "type": "function",
+        "z": "b1813a83246977f7",
+        "name": "function 9",
+        "func": "// Assuming msg.payload contains the content of the file\n// Set the \"endTime\" value to 300\nvar PipeT = msg.payload.PipeT;\n\n\nvar modifiedContent = msg.payload.sim_control_temperature.replace(/pipe\\s*\\n\\s*\\{\\s*\\n\\s*type\\s*fixedValue;(.*)value\\s*uniform \\d+;/s, \"pipe\\n    {\\n        type            fixedValue;    // pipe has constant T\\n        value           uniform    \" + PipeT + \";\");\n\n\n\n\n// Update the payload with the modified content\nmsg.payload = modifiedContent;\n\n// Return the modified content\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "befdf71b5f23619e",
+        "type": "join",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 570,
+        "y": 440,
+        "wires": [
+            [
+                "add5523ed62a065e",
+                "3c46d6026487e354"
+            ]
+        ]
+    },
+    {
+        "id": "9b982d2b7b7e3ed7",
+        "type": "mqtt in",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "topic": "sim_control_temperature",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "3e23a6fd421c4e41",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 230,
+        "y": 360,
+        "wires": [
+            [
+                "6cb1b7fa44b73cb1",
+                "f0803b9e3e86372c"
+            ]
+        ]
+    },
+    {
+        "id": "6cb1b7fa44b73cb1",
+        "type": "function",
+        "z": "b1813a83246977f7",
+        "name": "function 10",
+        "func": "msg.topic = \"PipeT\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 440,
+        "wires": [
+            [
+                "befdf71b5f23619e"
+            ]
+        ]
+    },
+    {
+        "id": "57448f9d4ad5f079",
+        "type": "file in",
+        "z": "b1813a83246977f7",
+        "name": "U",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\0\\U",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "ascii",
+        "allProps": false,
+        "x": 450,
+        "y": 620,
+        "wires": [
+            [
+                "0ccf9610c198cc4d"
+            ]
+        ]
+    },
+    {
+        "id": "3114ad2b73f1a331",
+        "type": "file",
+        "z": "b1813a83246977f7",
+        "name": "Tnew",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\0\\U",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "ascii",
+        "x": 1010,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f1272fb1b7462982",
+        "type": "debug",
+        "z": "b1813a83246977f7",
+        "name": "debug 25",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "cdd6070dab774711",
+        "type": "function",
+        "z": "b1813a83246977f7",
+        "name": "function 11",
+        "func": "// Assuming msg.payload contains the content of the file\n// Set the \"endTime\" value to 300\nvar InletU = msg.payload.InletU;\n\n\nvar modifiedContent = msg.payload.sim_control_velocity.replace(/inlet\\s*\\n\\s*\\{\\s*\\n\\s*type\\s*fixedValue;(.*)value\\s*uniform \\(0 0.05 0\\);/s, \"inlet\\n    {\\n        type            fixedValue;\\n        value     uniform  (0 \" + InletU + \" 0) ;\");\n\n\n\n\n// Update the payload with the modified content\nmsg.payload = modifiedContent;\n\n// Return the modified content\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 620,
+        "wires": [
+            [
+                "3114ad2b73f1a331"
+            ]
+        ]
+    },
+    {
+        "id": "0ccf9610c198cc4d",
+        "type": "join",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 590,
+        "y": 720,
+        "wires": [
+            [
+                "cdd6070dab774711",
+                "f1272fb1b7462982"
+            ]
+        ]
+    },
+    {
+        "id": "f8d35dda5f5965d7",
+        "type": "mqtt in",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "topic": "sim_control_velocity",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "3e23a6fd421c4e41",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 210,
+        "y": 640,
+        "wires": [
+            [
+                "b83f1f6ee610d2ae",
+                "57448f9d4ad5f079"
+            ]
+        ]
+    },
+    {
+        "id": "b83f1f6ee610d2ae",
+        "type": "function",
+        "z": "b1813a83246977f7",
+        "name": "function 12",
+        "func": "msg.topic = \"InletU\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 720,
+        "wires": [
+            [
+                "0ccf9610c198cc4d"
+            ]
+        ]
+    },
+    {
+        "id": "87d1c7252f8a980e",
+        "type": "template",
+        "z": "b1813a83246977f7",
+        "name": "Temperature",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "/*--------------------------------*- C++ -*----------------------------------*\\\n| =========                 |                                                 |\n| \\\\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |\n|  \\\\    /   O peration     | Version:  v2212                                 |\n|   \\\\  /    A nd           | Website:  www.openfoam.com                      |\n|    \\\\/     M anipulation  |                                                 |\n\\*---------------------------------------------------------------------------*/\nFoamFile\n{\n    version     2.0;\n    format      ascii;\n    class       volScalarField;\n    object      T;\n}\n// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //\n\ndimensions      [0 0 0 1 0 0 0];\n\ninternalField   uniform 300;\n\nboundaryField\n{\n    \n    wall\n    {\n        type            zeroGradient;\n    }\n\n    symmetry\n    {\n        type            symmetry;\n    }\n\n    pipe\n    {\n        type            fixedValue;    // pipe has constant T\n        value           uniform    {{payload}} ;\n    }\n\n    outlet\n    {\n        type            zeroGradient;\n    }\n\n    inlet\n    {\n        type            fixedValue;   \n        value           uniform    300;\n    }\n}\n\n\n// ************************************************************************* //\n",
+        "output": "str",
+        "x": 430,
+        "y": 1000,
+        "wires": [
+            [
+                "e1c6e130e895f935",
+                "c1320d0aa5ae9bc7"
+            ]
+        ]
+    },
+    {
+        "id": "e1c6e130e895f935",
+        "type": "file",
+        "z": "b1813a83246977f7",
+        "name": "Tnew",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\0\\T",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "ascii",
+        "x": 630,
+        "y": 1000,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3f1c11f9bd827b07",
+        "type": "inject",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "200",
+        "payloadType": "str",
+        "x": 230,
+        "y": 1000,
+        "wires": [
+            [
+                "87d1c7252f8a980e"
+            ]
+        ]
+    },
+    {
+        "id": "c1320d0aa5ae9bc7",
+        "type": "debug",
+        "z": "b1813a83246977f7",
+        "name": "debug 26",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "35410e808e4d85d5",
+        "type": "mqtt in",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "topic": "sim_control_temperature",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "3e23a6fd421c4e41",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 1080,
+        "wires": [
+            [
+                "87d1c7252f8a980e"
+            ]
+        ]
+    },
+    {
+        "id": "05c953ebfaa42a51",
+        "type": "nextcloud-webdav-in",
+        "z": "8ec4a383b2d52912",
+        "uname": "",
+        "server": "ad4a3b3c95053afd",
+        "filename": "reference_velocity.py_timestep1_.glb",
+        "directory": "\"C:/Users/XR-Lab/Documents/Jeswin Files/Project HoloCFD/openfoamdocker/ExpressServer/ABs/\"",
+        "x": 420,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ace6df40df2c72bd",
+        "type": "inject",
+        "z": "8ec4a383b2d52912",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 80,
+        "wires": [
+            [
+                "05c953ebfaa42a51"
+            ]
+        ]
+    },
+    {
+        "id": "99fb5b123f77c8c1",
+        "type": "nextcloud-webdav-out",
+        "z": "8ec4a383b2d52912",
+        "wname": "",
+        "server": "ad4a3b3c95053afd",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\ExpressServer\\ABs\\1.glb",
+        "x": 330,
+        "y": 300,
+        "wires": [
+            [
+                "df5305982ee559e7"
+            ]
+        ]
+    },
+    {
+        "id": "5a8ddbd2876dbbc8",
+        "type": "inject",
+        "z": "8ec4a383b2d52912",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 80,
+        "y": 260,
+        "wires": [
+            [
+                "7d9095d20b6308d0"
+            ]
+        ]
+    },
+    {
+        "id": "68e46c4da30d1b18",
+        "type": "nextcloud-webdav-list",
+        "z": "8ec4a383b2d52912",
+        "wname": "",
+        "server": "ad4a3b3c95053afd",
+        "directory": "",
+        "x": 330,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "79be47741a260a63",
+        "type": "webdav-list",
+        "z": "8ec4a383b2d52912",
+        "wname": "",
+        "server": "bd5a391d566dae34",
+        "directory": "",
+        "x": 290,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "daad330f8b795ddd",
+        "type": "webdav-read",
+        "z": "8ec4a383b2d52912",
+        "wname": "",
+        "server": "bd5a391d566dae34",
+        "filename": "reference_velocity.py_timestep1_.glb",
+        "output": "binary",
+        "x": 310,
+        "y": 180,
+        "wires": [
+            [
+                "239bfb7dc25ae28d"
+            ]
+        ]
+    },
+    {
+        "id": "239bfb7dc25ae28d",
+        "type": "file",
+        "z": "8ec4a383b2d52912",
+        "name": "",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\ExpressServer\\ABs\\1.glb",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "setbymsg",
+        "x": 790,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7d9095d20b6308d0",
+        "type": "webdav-write",
+        "z": "8ec4a383b2d52912",
+        "uname": "",
+        "server": "bd5a391d566dae34",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\ExpressServer\\ABs\\1.glb",
+        "overwrite": true,
+        "format": "binary",
+        "directory": "/3Dmodels",
+        "x": 450,
+        "y": 240,
+        "wires": [
+            [
+                "df5305982ee559e7"
+            ]
+        ]
+    },
+    {
+        "id": "df5305982ee559e7",
+        "type": "debug",
+        "z": "8ec4a383b2d52912",
+        "name": "debug 27",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 300,
+        "wires": []
+    }
+]
