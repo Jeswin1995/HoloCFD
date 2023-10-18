@@ -50,7 +50,7 @@ for item in obj_list:
             print(obj.name)
         
     
-    bpy.ops.export_scene.gltf(filepath=path_blender  + str(statefile) + '_timestep1_' + export_format_blender, export_format='GLB', use_selection=True,export_tangents=True, export_attributes=True,) 
+    bpy.ops.export_scene.gltf(filepath=path_blender + '600+0.06' + export_format_blender, export_format='GLB', use_selection=True,export_tangents=True, export_attributes=True,) 
     print("Done")   
 
 """

@@ -18,7 +18,7 @@ application     buoyantBoussinesqSimpleFoam;
 
 startFrom       startTime;
 
-startTime       0;
+startTime       298;
 
 stopAt          endTime;
 

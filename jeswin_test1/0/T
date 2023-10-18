@@ -34,7 +34,7 @@ boundaryField
     pipe
     {
         type            fixedValue;    // pipe has constant T
-        value           uniform    300 ;
+        value           uniform    500 ;
     }
 
     outlet
