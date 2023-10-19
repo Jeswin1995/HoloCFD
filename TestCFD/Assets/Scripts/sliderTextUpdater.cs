@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using Microsoft.MixedReality.Toolkit.UI;
+using UnityEngine.Events;
 
 public class sliderTextUpdater : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class sliderTextUpdater : MonoBehaviour
     //public float newValue ;
     public float velocityUpdatedValue;
     public int temperatureUpdatedValue;
+    // Create a Unity Event to be triggered when the value changes
+    [System.Serializable]
+    public class ValueChangedEvent : UnityEvent<string> { }
+    public ValueChangedEvent onValueChanged;
 
     private void Start()
     {
@@ -41,15 +46,20 @@ public class sliderTextUpdater : MonoBehaviour
         if (selectedMeasurement == MeasurementType.Velocity)
         {
             velocityUpdatedValue = eventData.NewValue*0.1f;
+            string velocityUpdatedValueString = velocityUpdatedValue.ToString("F2");
             // Update the TMP Text element with the calculated value
-            textElement.text = velocityUpdatedValue.ToString("F2"); // Format the value as desired
+            textElement.text = velocityUpdatedValueString; // Format the value as desired
+            onValueChanged.Invoke(velocityUpdatedValueString);
+
         }
         else if (selectedMeasurement == MeasurementType.Temperature)
         {
             //newValue *= 1000f;
             temperatureUpdatedValue = Mathf.RoundToInt(eventData.NewValue*1000f);
+            string temperatureUpdatedValueString = temperatureUpdatedValue.ToString();
             // Update the TMP Text element with the calculated value
             textElement.text = temperatureUpdatedValue.ToString("F2"); // Format the value as desired
+            onValueChanged.Invoke(temperatureUpdatedValueString);
         }
         
     }

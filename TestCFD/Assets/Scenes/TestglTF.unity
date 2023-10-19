@@ -460,7 +460,7 @@ MonoBehaviour:
   autoConnect: 1
   mqttUserName: 
   mqttPassword: 
-  topicSubscribe: '#'
+  topicSubscribe: sim_complete
   topicPublish: 
   messagePublish: 
   autoTest: 0
@@ -988,13 +988,13 @@ MonoBehaviour:
   touchCollider: {fileID: 867629703}
   sliderValue: 0.5
   useSliderStepDivisions: 0
-  sliderStepDivisions: 1
+  sliderStepDivisions: 1000
   trackVisuals: {fileID: 2014390615}
   tickMarks: {fileID: 391277197}
   thumbVisuals: {fileID: 1862275974}
   sliderAxis: 0
-  sliderStartDistance: -0.125
-  sliderEndDistance: 0.12499999
+  sliderStartDistance: -0.11999995
+  sliderEndDistance: 0.12
   OnValueUpdated:
     m_PersistentCalls:
       m_Calls: []
@@ -1094,6 +1094,9 @@ MonoBehaviour:
   textElement: {fileID: 1416414618}
   velocityUpdatedValue: 0
   temperatureUpdatedValue: 0
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &144644059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1951,6 +1954,7 @@ GameObject:
   m_Component:
   - component: {fileID: 254439340}
   - component: {fileID: 254439339}
+  - component: {fileID: 254439341}
   m_Layer: 0
   m_Name: Model_Instantiator
   m_TagString: Untagged
@@ -1971,6 +1975,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPosition: {x: 0, y: 0, z: 0.5}
+  controller: {fileID: 1122077002}
+  retryInterval: 5
+  maxCount: 10
+  nextcloudURL: https://cloud.tuhh.de
+  remoteFilePath: /remote.php/dav/files/
+  localFilePath: /TestCFD/
 --- !u!4 &254439340
 Transform:
   m_ObjectHideFlags: 0
@@ -1986,6 +1996,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &254439341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254439338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e51dc348f83d5cf4ca6834c473faba7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mqttReceiver: {fileID: 32198946}
 --- !u!1 &271868985
 GameObject:
   m_ObjectHideFlags: 0
@@ -8084,6 +8107,8 @@ MonoBehaviour:
   velocitySlider: {fileID: 1174295718}
   temperatureSlider: {fileID: 127923897}
   text: {fileID: 962240297}
+  velocitySliderValue: 
+  temperatureSliderValue: 
 --- !u!1 &1140694757
 GameObject:
   m_ObjectHideFlags: 0
@@ -8416,6 +8441,9 @@ MonoBehaviour:
   textElement: {fileID: 962240297}
   velocityUpdatedValue: 0
   temperatureUpdatedValue: 0
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1180099257
 GameObject:
   m_ObjectHideFlags: 0
@@ -14858,9 +14886,9 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1122077002}
-        m_TargetAssemblyTypeName: ButtonController, Assembly-CSharp
-        m_MethodName: OnSimulate
+      - m_Target: {fileID: 254439339}
+        m_TargetAssemblyTypeName: InstantiateFBX, Assembly-CSharp
+        m_MethodName: CheckLocalFile
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

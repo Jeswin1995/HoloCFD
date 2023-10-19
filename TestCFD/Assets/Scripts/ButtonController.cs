@@ -1,7 +1,5 @@
-using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ButtonController : MonoBehaviour
 {
@@ -13,10 +11,26 @@ public class ButtonController : MonoBehaviour
 
     string velocity_Topic = "sim_control_velocity";
     string temperature_Topic = "sim_control_temperature";
+    public string velocitySliderValue;
+    public string temperatureSliderValue;
+
+    public void Start()
+    {
+        velocitySlider.onValueChanged.AddListener(OnVelocityValueChanged);
+        temperatureSlider.onValueChanged.AddListener(OnTemperatureValueChanged);
+    }
+
+    public void OnVelocityValueChanged(string value)
+    {
+        velocitySliderValue = value;
+    }
+
+    public void OnTemperatureValueChanged(string value)
+    {
+        temperatureSliderValue = value;
+    }
     public IEnumerator OnVelocityChanged()
     {
-        string velocitySliderValue = velocitySlider.velocityUpdatedValue.ToString();
-        Debug.Log(velocitySliderValue);
         if (velocitySliderValue != null)
         {
             Debug.Log(velocity_Topic);
@@ -29,7 +43,6 @@ public class ButtonController : MonoBehaviour
   
     public IEnumerator OnTemperatureChanged()
     {
-        string temperatureSliderValue = temperatureSlider.temperatureUpdatedValue.ToString();
         if (temperatureSliderValue != null)
         {
             mqttReceiver.GetComponent<MeasurementPublisher>().publishMessage(temperature_Topic, temperatureSliderValue);
@@ -49,19 +62,15 @@ public class ButtonController : MonoBehaviour
     public void OnSimulate()
     {
         StartCoroutine(CallAllFunctionsSequentially());
+        Debug.Log("Simulate started");
     }
     private IEnumerator CallAllFunctionsSequentially()
     {
         yield return StartCoroutine(OnVelocityChanged());
         yield return StartCoroutine(OnTemperatureChanged());
-        yield return StartCoroutine (OnSimulateButtonPressed());
+        //yield return StartCoroutine (OnSimulateButtonPressed());
     
     }
 
-    //public IEnumerator OnRefreshButton()
-    //{
-    //    StartCoroutine(buttonReceiver.SaveAndDownload("http://localhost:5000/download", "reference_velocity.py_timestep1_.glb"));
-    //    //yield return new WaitForSeconds(1);
-    //    yield return null;
-    //}
+    
 }

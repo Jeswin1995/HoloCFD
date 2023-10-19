@@ -8,9 +8,7 @@ using System.ComponentModel;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
+
 
 #if WINDOWS_UWP
 using System.Threading.Tasks;
@@ -20,14 +18,25 @@ using Windows.Storage;
 public class InstantiateFBX : MonoBehaviour
 {
     string assetName = "reference_velocity.py_timestep1_.glb";
-    string defaultLineMaterialName = "Default-Line";
     string saveTo = "";
-    bool assetsLoaded = false;
-    int counter = 0;
-    int index = 0;
     public Vector3 spawnPosition;
-    private async void Start()
+    public ButtonController controller;
+    private LoadAssetFromServer serverScript;
+    public float retryInterval = 5f; // Adjust the retry interval as needed
+    public int maxCount = 100; // Maximum number of retries before giving up
+    private int retryCount = 0;
+
+    //server variables
+
+    public string nextcloudURL = "https://cloud.tuhh.de";
+    private string username = "czr6402";
+    private string password = "7Zdcg-kAeJQ-pEZJH-Nt7oL-RcaHH";
+    public string remoteFilePath = "/remote.php/dav/files/";
+    public string localFilePath = "/TestCFD/";
+  
+    public void CheckLocalFile()
     {
+        assetName = controller.temperatureSliderValue + "+" + controller.velocitySliderValue + ".glb";
         // Create a folder inside UWP's local storage
 #if WINDOWS_UWP
         StorageFolder localFolder = ApplicationData.Current.LocalFolder;
@@ -35,66 +44,65 @@ public class InstantiateFBX : MonoBehaviour
 #else
         saveTo = Application.streamingAssetsPath + '/' + assetName;
 #endif
+        string url = nextcloudURL + remoteFilePath + username + localFilePath;
 
-        StartCoroutine(SaveAndDownload("http://192.168.8.120:5000/download", assetName));
+        if (System.IO.File.Exists(saveTo))
+        {
+            LoadGLBFile(saveTo);
+        }
+        else
+        {
+            StartCoroutine(SaveAndDownload(url, assetName, saveTo));
+        }
+        
     }
 
-    public IEnumerator SaveAndDownload(string url, string assetName)
+    public IEnumerator SaveAndDownload(string url, string assetName, string saveTo)
     {
-
-     
-        
-        //saveTo =  Application.streamingAssetsPath  + '/' + asstName;
-        
         Debug.Log(saveTo);
         transform.gameObject.AddComponent<LoadAssetFromServer>();
-        transform.GetComponent<LoadAssetFromServer>().DownloadAssets(url, assetName, saveTo);
-        //yield return new WaitUntil(() =>File.Exists(saveTo));
-        //byte[] gltfData = File.ReadAllBytes(saveTo);
-
-        while (!transform.GetComponent<LoadAssetFromServer>().isFileAvailable)
-        {
-            yield return null;
-            
-        }
+        serverScript = transform.GetComponent<LoadAssetFromServer>();
+        UnityWebRequest request = serverScript.DownloadAssets(url, assetName, saveTo);
+        yield return request;
         Debug.Log("beforeloadingfile");
-        try
+        if (!request.isHttpError && !request.isNetworkError)
         {
-            GameObject model = Importer.LoadFromFile(saveTo);
-            Debug.Log("Load done using Siccity");
-            model.transform.position = spawnPosition;
-            MeshCollider meshcollider = model.AddComponent<MeshCollider>();
-            meshcollider.convex = true;
-            model.AddComponent<ObjectManipulator>();
-            model.AddComponent<NearInteractionGrabbable>();
-            //File.Delete(saveTo);
+            while (!serverScript.isFileCheckDone && retryCount<maxCount)
+            {
+                yield return new WaitForSeconds(retryInterval);
+                retryCount++;
+            }
+            Debug.Log("FileCheckDone");
+            serverScript.isFileCheckDone = false;
+            try
+            {
+                LoadGLBFile(saveTo);
+            }
+            catch(Exception e)
+            {
+                controller.OnSimulate();
+                Debug.Log("File dont exist publishing");
+            }
         }
-        catch (Exception e)
+        else
         {
-            Debug.Log(e);
-            LoadGLTFAsync(saveTo);
-            Debug.Log("Load done using MRTk");
-            
-        }
-           
-                
-   
+            Debug.Log("File not available online");
 
+            controller.OnSimulate();
+
+        }
     }
-    public async Task<GltfObject> LoadGLTFAsync(string saveTo)
+ 
+    private void LoadGLBFile(string saveTo)
     {
-        try
-        {
-            // Import the GLTF file asynchronously using MRTK GLTFSerialization
-            GltfObject importedObject = await GltfUtility.ImportGltfObjectFromPathAsync(saveTo);
-            return importedObject;
-        }
-        catch (Exception ex)
-        {
-            // Handle any exceptions that may occur during the import
-            Debug.LogError($"Error loading GLTF file: {ex.Message}");
-            return null; // You may want to handle this error gracefully in your application
-        }
+        GameObject model = Importer.LoadFromFile(saveTo);
+        Debug.Log("Load done");
+        model.transform.position = spawnPosition;
+        MeshCollider meshcollider = model.AddComponent<MeshCollider>();
+        meshcollider.convex = true;
+        model.AddComponent<ObjectManipulator>();
+        model.AddComponent<NearInteractionGrabbable>();
+        //File.Delete(saveTo);
     }
 
 

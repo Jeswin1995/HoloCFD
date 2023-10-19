@@ -248349,6 +248349,15 @@ internalField   nonuniform List<scalar>
 
 
 
+
+
+
+
+
+
+
+
+
 boundaryField
 {
     
@@ -248365,7 +248374,7 @@ boundaryField
     pipe
     {
         type            fixedValue;    // pipe has constant T
-        value           uniform    600 ;
+        value           uniform    721 ;
     }
 
     outlet

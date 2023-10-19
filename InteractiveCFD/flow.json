@@ -132,7 +132,8 @@
             [],
             [],
             [
-                "05ec4df4693454af"
+                "05ec4df4693454af",
+                "f367a87adee8a1e0"
             ]
         ]
     },
@@ -170,7 +171,8 @@
             [],
             [],
             [
-                "1f03ba64af029a15"
+                "1f03ba64af029a15",
+                "f367a87adee8a1e0"
             ]
         ]
     },
@@ -195,8 +197,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 1260,
-        "y": 200,
+        "x": 1180,
+        "y": 20,
         "wires": [
             [
                 "bf84947ea715a0a2"
@@ -382,7 +384,8 @@
             [],
             [],
             [
-                "02488c6ed8f21066"
+                "02488c6ed8f21066",
+                "f367a87adee8a1e0"
             ]
         ]
     },
@@ -409,7 +412,9 @@
             ],
             [
                 "573230bd4a09471a",
-                "bf84947ea715a0a2"
+                "bf84947ea715a0a2",
+                "cfe683cfcff78abc",
+                "f367a87adee8a1e0"
             ]
         ]
     },
@@ -450,8 +455,8 @@
         "links": [
             "400b1318e0bbe831"
         ],
-        "x": 225,
-        "y": 380,
+        "x": 65,
+        "y": 420,
         "wires": [
             [
                 "be820ec65d9161e8",
@@ -470,8 +475,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
-        "y": 380,
+        "x": 210,
+        "y": 420,
         "wires": [
             [
                 "8886b73b785bf951"
@@ -489,8 +494,8 @@
         "syntax": "mustache",
         "template": "import bpy\nimport os\nfrom distutils.dir_util import copy_tree\nimport timeit\nimport glob\nimport shutil\n\n#start2 = timeit.default_timer()\n#data format to export visual CFD data from ParaView: x3d, vrml, svg and other supported formats\n#(optional) exportParaview = input ('Enter the export format from ParaView: ')\nexportParaview = 'x3d'\nexport_format_paraview = '.' + exportParaview\n\nimport_format_blender = export_format_paraview\n#data format to export visual CFD data from Blender: fbx, obj, 3ds, ply, stl and other supported formats\n\nexportBlender = 'glb'  # Define the export format for Blender\nexport_format_blender = '.' + exportBlender\n#create a directory to collect processed data and metadata\nstatefile = \"reference_velocity.py\"\npath_metadata = 'process/metadata/'\nos.makedirs(path_metadata, exist_ok=True)\npath_paraview = os.getcwd() + '/' + path_metadata\npath_blender = path_paraview\npath_unityfor = os.getcwd() + '/' + 'process/'\n# Loop through all objects in the scene\n#blender starts metadata import & export\npath_to_obj_dir = os.path.join(path_blender)\n#get list of all files in directory\nfile_list = sorted(os.listdir(path_to_obj_dir))\n#get a list of files ending in 'obj' in Blender\nobj_list = [item for item in file_list if item.endswith(import_format_blender)]\n#loop through the strings in obj_list and add the files to the scene\nfor item in obj_list:\n    path_to_file = os.path.join(path_to_obj_dir, item)\n    bpy.ops.import_scene.x3d(filepath = path_to_file)\n    #get the current path and make a new folder for the exported meshes\n    path_blender = bpy.path.abspath(path_blender)\n    # Get a reference to the current active scene\n    scene = bpy.context.scene\n    for obj in scene.objects:\n        bpy.ops.object.select_all(action='DESELECT') #to deselect all meshes\n        # Select the current object\n\n        # Check if the object name starts with \"Shape_IndexedFaceSet\"\n        #if obj.name.startswith(\"Shape_IndexedFaceSet\"):\n        if obj.name != \"Cube\":\n            # Select the object\n            obj.select_set(True)\n            print(obj.name)\n        \n    \n    bpy.ops.export_scene.gltf(filepath=path_blender + '{{payload}}' + export_format_blender, export_format='GLB', use_selection=True,export_tangents=True, export_attributes=True,) \n    print(\"Done\")   \n\n\"\"\"\nData processing analytics for qualitative studies (3)\n\"\"\"\n        \npath_to_obj_dir = os.path.join(path_blender)\nfile_list = sorted(os.listdir(path_to_obj_dir))\nobj_list = [item for item in file_list if item.endswith('.glb')]\nsize_file_blender = []\nfor item in obj_list:\n    path_to_file = os.path.join(path_to_obj_dir, item)\n    size_processing_blender=os.path.getsize(path_to_file)\n    print('GLB file sizes in bytes:',size_processing_blender)\n    size_file_blender.append(size_processing_blender)\n    shutil.copy(path_to_file, os.getcwd() + '/' + 'ExpressServer/ABs/')\n    cloud_path = r\"Z:\\TestCFD\"\n    shutil.copy(path_to_file, cloud_path)\n\nprint('Data processing has successfully been completed!')\n\n#clean up metadata \n#metadata = input ('Clean all metadata? [y or n]: ')\nmetadata = \"y\"\nmypath = path_paraview\nif metadata == 'y':\n    for mydata in glob.glob(mypath + \"Shape*\"):\n        shutil.copy(mydata, os.getcwd() + '/' + 'process/')\n    for metadata in glob.glob(mypath + \"*\"):\n        os.remove(metadata)\n    print ('Metadata is cleaned.')\nelse:\n    print ('Metadata is available under the process directory.')\n#self.text_comments.insert('end', open(filename,'r').read())\n\n\n\n\n\"\"\"\nThe end\n\"\"\"",
         "output": "str",
-        "x": 540,
-        "y": 380,
+        "x": 380,
+        "y": 420,
         "wires": [
             [
                 "01835ba2ef1e25a5"
@@ -508,8 +513,8 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "utf8",
-        "x": 750,
-        "y": 380,
+        "x": 590,
+        "y": 420,
         "wires": [
             [
                 "a4cae2ac3d8ea16c"
@@ -598,8 +603,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 940,
-        "y": 380,
+        "x": 780,
+        "y": 420,
         "wires": [
             [
                 "a974ebe7f8e151a6"
@@ -704,6 +709,99 @@
         "x": 450,
         "y": 260,
         "wires": []
+    },
+    {
+        "id": "f084791b8f176a99",
+        "type": "mqtt out",
+        "z": "3e745e36ff578044",
+        "name": "MqttOut",
+        "topic": "sim_complete",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "3e23a6fd421c4e41",
+        "x": 1420,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "cfe683cfcff78abc",
+        "type": "change",
+        "z": "3e745e36ff578044",
+        "name": "Success message",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Success",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1270,
+        "y": 180,
+        "wires": [
+            [
+                "f084791b8f176a99"
+            ]
+        ]
+    },
+    {
+        "id": "f367a87adee8a1e0",
+        "type": "function",
+        "z": "3e745e36ff578044",
+        "name": "function 19",
+        "func": "if (msg.payload.code !== 0) {\n    // The code is not equal to 0, so it's an error\n    msg.payload = \"Error\";\n    return msg;\n} else {\n    // The code is equal to 0, no error\n    return null; // Continue with the original message\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1230,
+        "y": 420,
+        "wires": [
+            [
+                "f084791b8f176a99"
+            ]
+        ]
+    },
+    {
+        "id": "fc6a98909359f904",
+        "type": "inject",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Error",
+        "payloadType": "str",
+        "x": 1290,
+        "y": 500,
+        "wires": [
+            [
+                "f084791b8f176a99"
+            ]
+        ]
     },
     {
         "id": "87d1c7252f8a980e",
