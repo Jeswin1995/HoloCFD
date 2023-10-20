@@ -16,6 +16,14 @@
         "env": []
     },
     {
+        "id": "be1b3ebbdcfed87f",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "f633a238518a1779",
         "type": "mqtt-broker",
         "name": "",
@@ -74,7 +82,7 @@
         "id": "ad4a3b3c95053afd",
         "type": "nextcloud-credentials",
         "cname": "",
-        "address": "https://cloud.tuhh.de/",
+        "address": "https://cloud.tuhh.de",
         "insecure": false
     },
     {
@@ -157,15 +165,15 @@
         "id": "05ec4df4693454af",
         "type": "exec",
         "z": "3e745e36ff578044",
-        "command": "docker exec -w /data/jeswin_test1 openfoam bash -c \"source /usr/lib/openfoam/openfoam2212/etc/bashrc && ./Allrun\"",
+        "command": "docker exec -w /data/jeswin_test1 openfoam bash -c \"source /usr/lib/openfoam/openfoam2212/etc/bashrc && ./Allrunparallel\"",
         "addpay": "",
         "append": "",
         "useSpawn": "true",
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "Allrun",
-        "x": 490,
+        "name": "Allrunparallel",
+        "x": 510,
         "y": 80,
         "wires": [
             [],
@@ -479,7 +487,9 @@
         "y": 420,
         "wires": [
             [
-                "8886b73b785bf951"
+                "8886b73b785bf951",
+                "946ac97a2e47b4bb",
+                "02ae16a00b1efcc3"
             ]
         ]
     },
@@ -623,7 +633,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "Allcleanlog",
-        "x": 1270,
+        "x": 1290,
         "y": 80,
         "wires": [
             [],
@@ -724,8 +734,8 @@
         "correl": "",
         "expiry": "",
         "broker": "3e23a6fd421c4e41",
-        "x": 1420,
-        "y": 280,
+        "x": 1520,
+        "y": 340,
         "wires": []
     },
     {
@@ -751,7 +761,7 @@
         "y": 180,
         "wires": [
             [
-                "f084791b8f176a99"
+                "946ac97a2e47b4bb"
             ]
         ]
     },
@@ -766,11 +776,11 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
-        "y": 420,
+        "x": 1170,
+        "y": 380,
         "wires": [
             [
-                "f084791b8f176a99"
+                "02ae16a00b1efcc3"
             ]
         ]
     },
@@ -797,6 +807,62 @@
         "payloadType": "str",
         "x": 1290,
         "y": 500,
+        "wires": [
+            [
+                "f084791b8f176a99"
+            ]
+        ]
+    },
+    {
+        "id": "946ac97a2e47b4bb",
+        "type": "join",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "mode": "custom",
+        "build": "string",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1410,
+        "y": 260,
+        "wires": [
+            [
+                "f084791b8f176a99"
+            ]
+        ]
+    },
+    {
+        "id": "02ae16a00b1efcc3",
+        "type": "join",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1330,
+        "y": 360,
         "wires": [
             [
                 "f084791b8f176a99"
@@ -1661,5 +1727,81 @@
         "x": 630,
         "y": 380,
         "wires": []
+    },
+    {
+        "id": "07b6b243166735b3",
+        "type": "inject",
+        "z": "be1b3ebbdcfed87f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 140,
+        "wires": [
+            [
+                "5982babbde106c6f"
+            ]
+        ]
+    },
+    {
+        "id": "f8af4bed6bf1f549",
+        "type": "webdav-read",
+        "z": "be1b3ebbdcfed87f",
+        "wname": "",
+        "server": "bd5a391d566dae34",
+        "filename": "515+0.05.glb",
+        "output": "binary",
+        "x": 330,
+        "y": 140,
+        "wires": [
+            [
+                "5960b6ec42841fd5"
+            ]
+        ]
+    },
+    {
+        "id": "5960b6ec42841fd5",
+        "type": "debug",
+        "z": "be1b3ebbdcfed87f",
+        "name": "debug 33",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "5982babbde106c6f",
+        "type": "nextcloud-webdav-out",
+        "z": "be1b3ebbdcfed87f",
+        "wname": "",
+        "server": "ad4a3b3c95053afd",
+        "filename": "/TestCFD/515+0.05.glb",
+        "x": 330,
+        "y": 220,
+        "wires": [
+            [
+                "5960b6ec42841fd5"
+            ]
+        ]
     }
 ]
