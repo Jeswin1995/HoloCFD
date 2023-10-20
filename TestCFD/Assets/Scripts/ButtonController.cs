@@ -1,3 +1,4 @@
+using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class ButtonController : MonoBehaviour
     public sliderTextUpdater velocitySlider;
     public sliderTextUpdater  temperatureSlider;
     public TMPro.TMP_Text text;
+    public Interactable simulatButton; 
 
     string velocity_Topic = "sim_control_velocity";
     string temperature_Topic = "sim_control_temperature";
@@ -62,6 +64,7 @@ public class ButtonController : MonoBehaviour
     public void OnSimulate()
     {
         StartCoroutine(CallAllFunctionsSequentially());
+        simulatButton.IsEnabled = false;
         Debug.Log("Simulate started");
     }
     private IEnumerator CallAllFunctionsSequentially()

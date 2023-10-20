@@ -1,0 +1,33 @@
+#!/bin/sh
+
+WM_PROJECT_DIR=/usr/lib/openfoam/openfoam2212  # Set the WM_PROJECT_DIR
+
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+restore0Dir
+
+# Extract the last part of the current directory as the folder name
+foldername=$(basename "$PWD")
+
+# Set the number of processors for parallel processing
+NUM_PROCS=8  # Adjust the number of processors as needed
+
+# Generate the .foam filename based on the folder name
+foamfilename="${foldername}.foam"
+
+# Use the touch command to create the .foam file
+touch "$foamfilename"
+
+# Decompose the case for parallel processing
+decomposePar -force
+
+# Run the parallel MPI version of the OpenFOAM application
+mpirun --allow-run-as-root -np $NUM_PROCS $(getApplication) -parallel
+
+# Reconstruct the case after the parallel run
+reconstructPar -latestTime
+
+# Note: $(getApplication) is used to run the application specific to your simulation.
+#------------------------------------------------------------------------------

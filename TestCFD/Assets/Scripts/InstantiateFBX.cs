@@ -8,6 +8,7 @@ using System.ComponentModel;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Threading.Tasks;
+using UnityEditor.PackageManager.Requests;
 
 
 #if WINDOWS_UWP
@@ -18,33 +19,44 @@ using Windows.Storage;
 public class InstantiateFBX : MonoBehaviour
 {
     string assetName = "reference_velocity.py_timestep1_.glb";
+    string saveToFolder = "";
     string saveTo = "";
+    string urlFolder = "";
     public Vector3 spawnPosition;
     public ButtonController controller;
     private LoadAssetFromServer serverScript;
+    public GameObject deleteButtonPrefab;
+
     public float retryInterval = 5f; // Adjust the retry interval as needed
-    public int maxCount = 100; // Maximum number of retries before giving up
+    public int maxCount = 10; // Maximum number of retries before giving up
     private int retryCount = 0;
 
     //server variables
 
     public string nextcloudURL = "https://cloud.tuhh.de";
-    private string username = "czr6402";
-    private string password = "7Zdcg-kAeJQ-pEZJH-Nt7oL-RcaHH";
+    private readonly string username = "czr6402";
     public string remoteFilePath = "/remote.php/dav/files/";
     public string localFilePath = "/TestCFD/";
   
+    public void Start()
+    {
+        serverScript = transform.gameObject.AddComponent<LoadAssetFromServer>();
+        serverScript.OnDownloadCompleted += HandleDownloadCompleted;
+
+#if WINDOWS_UWP
+        StorageFolder saveToFolder = ApplicationData.Current.LocalFolder;
+#else
+        saveToFolder = Application.streamingAssetsPath;
+#endif
+        urlFolder = nextcloudURL + remoteFilePath + username + localFilePath;
+    }
     public void CheckLocalFile()
     {
         assetName = controller.temperatureSliderValue + "+" + controller.velocitySliderValue + ".glb";
+        Debug.Log(assetName);
+        saveTo = saveToFolder + '/' + assetName;
         // Create a folder inside UWP's local storage
-#if WINDOWS_UWP
-        StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-        saveTo = Path.Combine(localFolder.Path, assetName);
-#else
-        saveTo = Application.streamingAssetsPath + '/' + assetName;
-#endif
-        string url = nextcloudURL + remoteFilePath + username + localFilePath;
+
 
         if (System.IO.File.Exists(saveTo))
         {
@@ -52,50 +64,70 @@ public class InstantiateFBX : MonoBehaviour
         }
         else
         {
-            StartCoroutine(SaveAndDownload(url, assetName, saveTo));
+            CheckOnline(assetName);
         }
         
     }
 
-    public IEnumerator SaveAndDownload(string url, string assetName, string saveTo)
+    public void CheckOnline(string assetName)
     {
+        StartCoroutine(SaveAndDownload(assetName));
+    }
+
+    public IEnumerator SaveAndDownload(string assetName)
+    {
+        saveTo = saveToFolder + "/" + assetName;
+        string url = urlFolder + assetName; 
         Debug.Log(saveTo);
-        transform.gameObject.AddComponent<LoadAssetFromServer>();
-        serverScript = transform.GetComponent<LoadAssetFromServer>();
-        UnityWebRequest request = serverScript.DownloadAssets(url, assetName, saveTo);
-        yield return request;
+        serverScript.DownloadAssets(url, saveTo);
         Debug.Log("beforeloadingfile");
-        if (!request.isHttpError && !request.isNetworkError)
+        while (!serverScript.isFileCheckDone || retryCount < maxCount)
         {
-            while (!serverScript.isFileCheckDone && retryCount<maxCount)
-            {
-                yield return new WaitForSeconds(retryInterval);
-                retryCount++;
-            }
-            Debug.Log("FileCheckDone");
-            serverScript.isFileCheckDone = false;
+            yield return new WaitForSeconds(retryInterval);
+            retryCount++;
+        }
+        Debug.Log("FileCheckDone");
+        serverScript.isFileCheckDone = false;
+    }
+
+    private void HandleDownloadCompleted(UnityWebRequest request, bool isSuccess, string saveTo)
+    {
+        if (isSuccess)
+        {
             try
             {
                 LoadGLBFile(saveTo);
             }
-            catch(Exception e)
+            catch
             {
                 controller.OnSimulate();
-                Debug.Log("File dont exist publishing");
+                Debug.Log("File exists but not loadable");
             }
+            // Process the downloaded data here if needed
         }
         else
         {
-            Debug.Log("File not available online");
-
+            Debug.Log("File dont exist publishing");
             controller.OnSimulate();
-
         }
     }
- 
-    private void LoadGLBFile(string saveTo)
+
+    private async void LoadGLBFile(string saveTo)
     {
-        GameObject model = Importer.LoadFromFile(saveTo);
+        GameObject model = await Load3DModelAsync(saveTo);
+        if (model != null)
+        {
+            // Attach a delete button script to the model
+            GameObject deleteButton = Instantiate(deleteButtonPrefab);
+            deleteButton.transform.position = model.transform.position + Vector3.up * 0.4f; // Position above the model
+
+            // Assign the model reference to the delete button script
+            DeleteButton deleteButtonScript = deleteButton.GetComponent<DeleteButton>();
+            deleteButtonScript.modelToDelete = model;
+
+            // Optionally, you can parent the delete button to the model for easier management
+            deleteButton.transform.parent = model.transform;
+        }
         Debug.Log("Load done");
         model.transform.position = spawnPosition;
         MeshCollider meshcollider = model.AddComponent<MeshCollider>();
@@ -104,7 +136,29 @@ public class InstantiateFBX : MonoBehaviour
         model.AddComponent<NearInteractionGrabbable>();
         //File.Delete(saveTo);
     }
+    async Task<GameObject> Load3DModelAsync(string saveTo)
+    {
+        ImportSettings importSettings = new ImportSettings(); // You can customize import settings here
 
+        // Wrap the asynchronous call in a Task to return the loaded GameObject
+        TaskCompletionSource<GameObject> tcs = new TaskCompletionSource<GameObject>();
+
+        Importer.LoadFromFileAsync(saveTo, importSettings, (model, animations) =>
+        {
+            // Use the loaded model and animations as needed
+            if (model != null)
+            {
+                tcs.SetResult(model);
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
+        });
+
+        // Wait for the task to complete and return the result
+        return await tcs.Task;
+    }
 
 #if WINDOWS_UWP
     // Helper method to create a folder asynchronously

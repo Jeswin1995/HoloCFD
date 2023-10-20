@@ -1,5 +1,5 @@
 Data processing is in progress...
 *****Data processing performance & analytics*****
-Time_ParaView:  2.9970980999999997
-Time_ParaView_Blender:  1.1449029000000008
-Time_Integration (sec):  4.142001
+Time_ParaView:  2.8488812
+Time_ParaView_Blender:  1.3529972999999997
+Time_Integration (sec):  4.2018785

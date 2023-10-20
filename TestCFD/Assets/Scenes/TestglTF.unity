@@ -1976,6 +1976,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPosition: {x: 0, y: 0, z: 0.5}
   controller: {fileID: 1122077002}
+  deleteButtonPrefab: {fileID: 108829792740951129, guid: 09c7141325ec5a8479a36d913a40a162, type: 3}
   retryInterval: 5
   maxCount: 10
   nextcloudURL: https://cloud.tuhh.de
@@ -2009,6 +2010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mqttReceiver: {fileID: 32198946}
+  simulateButton: {fileID: 2143618627}
 --- !u!1 &271868985
 GameObject:
   m_ObjectHideFlags: 0
@@ -7037,7 +7039,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sample text
+  m_text: Set U
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8107,6 +8109,7 @@ MonoBehaviour:
   velocitySlider: {fileID: 1174295718}
   temperatureSlider: {fileID: 127923897}
   text: {fileID: 962240297}
+  simulatButton: {fileID: 2143618627}
   velocitySliderValue: 
   temperatureSliderValue: 
 --- !u!1 &1140694757
@@ -10612,7 +10615,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sample text
+  m_text: Set T
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

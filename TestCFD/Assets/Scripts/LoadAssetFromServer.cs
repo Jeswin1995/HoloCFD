@@ -1,66 +1,84 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
 
 public class LoadAssetFromServer : MonoBehaviour
 {
-    private string saveTo = "";
     public float retryInterval = 5f; // Adjust the retry interval as needed
-    public int maxRetries = 100; // Maximum number of retries before giving up
+    public int maxRetries = 10; // Maximum number of retries before giving up
 
     private int retryCount = 0;
     // Signal to indicate that the file is available
     public bool isFileCheckDone = false;
 
-    private string nextcloudURL = "https://cloud.tuhh.de";
-    private string username = "czr6402";
-    private string password = "7Zdcg-kAeJQ-pEZJH-Nt7oL-RcaHH";
-    private string remoteFilePath = "/remote.php/dav/files/";
-    private string localFilePath = "/TestCFD/";
+    
+    private readonly string username = "czr6402";
+    private readonly string password = "7Zdcg-kAeJQ-pEZJH-Nt7oL-RcaHH";
+    
 
-    public event Action<UnityWebRequest, bool> OnDownloadCompleted;
+   
+
+    public event Action<UnityWebRequest, bool, string> OnDownloadCompleted;
 
     // Method to be called from outside the script
-    public UnityWebRequest DownloadAssets(string url, string assetName, string saveTo)
+    public void DownloadAssets(string url,  string saveTo)
     {
-        UnityWebRequest request = CreateDownloadRequest(url, assetName, saveTo);
-        StartCoroutine(ProcessRequest(request));
-        return request;
+        StartCoroutine(DownloadAndSaveFile(url, saveTo, (req) =>
+        {
+            if (req.isNetworkError || req.isHttpError)
+            {
+                Debug.LogError("Download failed: " + req.error);
+            }
+            else
+            {
+                Debug.Log("Download successful. File saved at: " + saveTo);
+                // You can also process the downloaded data here if needed.
+            }
+
+            if (OnDownloadCompleted != null)
+            {
+                OnDownloadCompleted(req, !req.isNetworkError && !req.isHttpError, saveTo);
+            }
+        }));
     }
 
-    private UnityWebRequest CreateDownloadRequest(string url, string assetName, string saveTo)
+    private IEnumerator DownloadAndSaveFile(string url, string saveTo, Action<UnityWebRequest> callback)
     {
-        url = nextcloudURL + remoteFilePath + username + localFilePath;
-        UnityWebRequest request = UnityWebRequest.Get(url + '/' + assetName);
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        request.SetRequestHeader("Authorization", "Basic " + Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(username + ":" + password)));
         request.downloadHandler = new DownloadHandlerFile(saveTo);
-        request.SetRequestHeader("Authorization", "Basic " + System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(username + ":" + password)));
-        return request;
-    }
-
-    private IEnumerator ProcessRequest(UnityWebRequest request)
-    {
         yield return request.SendWebRequest();
-
+        // Wait until the download is complete
+        yield return new WaitUntil(() => request.isDone);
         if (!request.isNetworkError && !request.isHttpError)
         {
-            while (!System.IO.File.Exists(saveTo) && retryCount<maxRetries)
-            {
+
+            // Wait until the download is complete (progress reaches 1.0)
+            yield return new WaitUntil(() => request.downloadProgress == 1.0f);
+            while (!System.IO.File.Exists(saveTo) && retryCount < maxRetries)
+            {  
                 yield return new WaitForSeconds(retryInterval);
                 Debug.LogWarning("File not available yet");
                 retryCount++;
             }
-            // The file is available, process the request here
-            Debug.Log("File is available!");
-             // Signal that the file is available
 
+            if (File.Exists(saveTo))
+            {
+                // The file is available, process the request here
+                Debug.Log("File is available!");
+            }
+            else
+            {
+                Debug.LogWarning("File not found");
+            }
         }
-        else
-        {
-            // The file is not available yet, retry after the specified interval
-            Debug.LogWarning("File not found");
-        }
+
+        
+
+        callback(request);
         isFileCheckDone = true;
     }
 }
