@@ -68,6 +68,13 @@ timestep_sim = 2
 # Obtain a list of timesteps with values
 animationScene1 = GetAnimationScene()
 tsteps = animationScene1.TimeKeeper.TimestepValues
+# Check if tsteps is a single float value or a list/array
+if isinstance(tsteps, float):
+    # If it's a float, make it a list with one element
+    tsteps = [tsteps]
+
+# Now you can safely access the last element
+animationScene1.AnimationTime = tsteps[-1]
 animationScene1.AnimationTime = tsteps[-1]
 # ParaView metadata export
 ExportView(path_paraview + str(tsteps[-1]) + export_format_paraview, view=renderView1, ExportColorLegends=1)

@@ -8,7 +8,7 @@ using System.ComponentModel;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Threading.Tasks;
-using UnityEditor.PackageManager.Requests;
+using UnityEngine.UI;
 
 
 #if WINDOWS_UWP
@@ -37,27 +37,25 @@ public class InstantiateFBX : MonoBehaviour
     private readonly string username = "czr6402";
     public string remoteFilePath = "/remote.php/dav/files/";
     public string localFilePath = "/TestCFD/";
-  
+
     public void Start()
     {
         serverScript = transform.gameObject.AddComponent<LoadAssetFromServer>();
         serverScript.OnDownloadCompleted += HandleDownloadCompleted;
-
-#if WINDOWS_UWP
-        StorageFolder saveToFolder = ApplicationData.Current.LocalFolder;
-#else
         saveToFolder = Application.streamingAssetsPath;
-#endif
         urlFolder = nextcloudURL + remoteFilePath + username + localFilePath;
     }
     public void CheckLocalFile()
     {
-        assetName = controller.temperatureSliderValue + "+" + controller.velocitySliderValue + ".glb";
+        assetName = controller.temperatureSliderValue + "+" + controller.velocitySliderValue + "+" + controller.dropdownValue + ".glb";
         Debug.Log(assetName);
-        saveTo = saveToFolder + '/' + assetName;
         // Create a folder inside UWP's local storage
-
-
+#if WINDOWS_UWP
+        StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+        saveTo = Path.Combine(localFolder.Path, assetName);
+#else
+        saveTo = saveToFolder + '/' + assetName;
+#endif
         if (System.IO.File.Exists(saveTo))
         {
             LoadGLBFile(saveTo);
@@ -76,7 +74,12 @@ public class InstantiateFBX : MonoBehaviour
 
     public IEnumerator SaveAndDownload(string assetName)
     {
-        saveTo = saveToFolder + "/" + assetName;
+#if WINDOWS_UWP
+        StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+        saveTo = Path.Combine(localFolder.Path, assetName);
+#else
+        saveTo = saveToFolder + '/' + assetName;
+#endif
         string url = urlFolder + assetName; 
         Debug.Log(saveTo);
         serverScript.DownloadAssets(url, saveTo);

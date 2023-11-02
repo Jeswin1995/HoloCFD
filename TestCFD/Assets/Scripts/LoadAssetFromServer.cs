@@ -61,7 +61,7 @@ public class LoadAssetFromServer : MonoBehaviour
             while (!System.IO.File.Exists(saveTo) && retryCount < maxRetries)
             {  
                 yield return new WaitForSeconds(retryInterval);
-                Debug.LogWarning("File not available yet");
+                Debug.Log("File not available yet");
                 retryCount++;
             }
 
@@ -72,7 +72,7 @@ public class LoadAssetFromServer : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("File not found");
+                Debug.Log("File not found");
             }
         }
 

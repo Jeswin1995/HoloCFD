@@ -16,9 +16,9 @@ FoamFile
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-maxCellSize     0.05;
+maxCellSize     0.01;
 
-surfaceFile     "HE.stl";
+surfaceFile     "HE24.stl";
 
 localRefinement
 {
@@ -74,7 +74,7 @@ boundaryLayers
 	maxNumIterations 5;	// max number of iterations for optimisation procedure
 	featureSizeFactor 0.4;	// ratio between max layer thickness and estimated feature size
 	reCalculateNormals 1; 	// 1: activate, 0: deactivate, calculation of normals
-	relThicknessTol 0.1;	// maximum allowed thickness variation between neighbouring points (normalized by point distance)
+	relThicknessTol 0.5;	// maximum allowed thickness variation between neighbouring points (normalized by point distance)
     }
 
     patchBoundaryLayers
@@ -91,6 +91,12 @@ boundaryLayers
             nLayers             5;
             thicknessRatio      1.2;
         }
+	symmetry
+        {
+            allowDiscontinuity  0;
+            nLayers             5;
+            thicknessRatio      1.2;
+        }	
     }
 }
 

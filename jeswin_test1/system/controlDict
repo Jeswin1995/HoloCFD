@@ -18,17 +18,17 @@ application     buoyantBoussinesqSimpleFoam;
 
 startFrom       startTime;
 
-startTime       298;
+startTime       300;
 
 stopAt          endTime;
 
-endTime   	1000;
+endTime   	1500;
 
 deltaT          1;
 
 writeControl    timeStep;
 
-writeInterval   10;
+writeInterval   50;
 
 purgeWrite      0;
 

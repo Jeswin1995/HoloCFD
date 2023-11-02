@@ -38,7 +38,7 @@ boundaryField
     inlet
     {
         type            fixedValue;
-        value     uniform (0 0.06288089 0) ;	// Re = 5000 for u(inlet) = 0.05 m/s
+        value     uniform (0 0.05 0) ;	// Re = 5000 for u(inlet) = 0.05 m/s
     }
 
     outlet

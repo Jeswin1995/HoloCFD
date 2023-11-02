@@ -146,22 +146,6 @@
         ]
     },
     {
-        "id": "ed8821db4f41d5f4",
-        "type": "debug",
-        "z": "3e745e36ff578044",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 540,
-        "y": 520,
-        "wires": []
-    },
-    {
         "id": "05ec4df4693454af",
         "type": "exec",
         "z": "3e745e36ff578044",
@@ -272,93 +256,6 @@
         "wires": []
     },
     {
-        "id": "2b8070528304fc34",
-        "type": "inject",
-        "z": "3e745e36ff578044",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 120,
-        "y": 560,
-        "wires": [
-            [
-                "9553e3877d11dee8"
-            ]
-        ]
-    },
-    {
-        "id": "bc3a1460f7d6551b",
-        "type": "debug",
-        "z": "3e745e36ff578044",
-        "name": "debug 18",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 560,
-        "y": 560,
-        "wires": []
-    },
-    {
-        "id": "8817e98c1c3c63a2",
-        "type": "debug",
-        "z": "3e745e36ff578044",
-        "name": "debug 19",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 540,
-        "y": 600,
-        "wires": []
-    },
-    {
-        "id": "9553e3877d11dee8",
-        "type": "exec",
-        "z": "3e745e36ff578044",
-        "command": "docker exec -w /data/jeswin_test1 openfoam bash -c \"source /usr/lib/openfoam/openfoam2212/etc/bashrc && cartesianMesh\" ",
-        "addpay": "",
-        "append": "",
-        "useSpawn": "true",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "Cartesian_MESH",
-        "x": 310,
-        "y": 560,
-        "wires": [
-            [
-                "ed8821db4f41d5f4"
-            ],
-            [
-                "bc3a1460f7d6551b"
-            ],
-            [
-                "8817e98c1c3c63a2"
-            ]
-        ]
-    },
-    {
         "id": "842eff4626a04586",
         "type": "debug",
         "z": "3e745e36ff578044",
@@ -385,15 +282,20 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "TesselateBlender",
+        "name": "TesselateParaview",
         "x": 750,
         "y": 80,
         "wires": [
-            [],
-            [],
+            [
+                "68b763f62a4bf215"
+            ],
+            [
+                "68b763f62a4bf215"
+            ],
             [
                 "02488c6ed8f21066",
-                "f367a87adee8a1e0"
+                "f367a87adee8a1e0",
+                "68b763f62a4bf215"
             ]
         ]
     },
@@ -408,7 +310,7 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "TesselateParaview",
+        "name": "TesselateBlender",
         "x": 970,
         "y": 80,
         "wires": [
@@ -420,9 +322,9 @@
             ],
             [
                 "573230bd4a09471a",
-                "bf84947ea715a0a2",
                 "cfe683cfcff78abc",
-                "f367a87adee8a1e0"
+                "f367a87adee8a1e0",
+                "bf84947ea715a0a2"
             ]
         ]
     },
@@ -463,12 +365,11 @@
         "links": [
             "400b1318e0bbe831"
         ],
-        "x": 65,
+        "x": 85,
         "y": 420,
         "wires": [
             [
-                "be820ec65d9161e8",
-                "840dd2f7c1175677"
+                "be820ec65d9161e8"
             ]
         ]
     },
@@ -477,7 +378,7 @@
         "type": "function",
         "z": "3e745e36ff578044",
         "name": "function 16",
-        "func": "// Combine the two messages here\nvar combinedPayload = msg.payload.sim_control_temperature + '+' + msg.payload.sim_control_velocity;\n\n// Send the combined message\nmsg.payload = combinedPayload;\nreturn msg;",
+        "func": "// Combine the two messages here\nvar combinedPayload = msg.payload.sim_control_temperature + '+' + msg.payload.sim_control_velocity + '+' + msg.payload.sim_control_mesh;\n\n// Send the combined message\nmsg.payload = combinedPayload;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -489,7 +390,8 @@
             [
                 "8886b73b785bf951",
                 "946ac97a2e47b4bb",
-                "02ae16a00b1efcc3"
+                "02ae16a00b1efcc3",
+                "a7235e146ea29c0f"
             ]
         ]
     },
@@ -656,8 +558,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 860,
-        "y": 680,
+        "x": 840,
+        "y": 660,
         "wires": [
             [
                 "4547cff9c1cb21fc"
@@ -676,7 +578,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "Allclean",
-        "x": 900,
+        "x": 920,
         "y": 560,
         "wires": [
             [],
@@ -696,7 +598,8 @@
         "y": 300,
         "wires": [
             [
-                "a974ebe7f8e151a6"
+                "a974ebe7f8e151a6",
+                "840dd2f7c1175677"
             ]
         ]
     },
@@ -870,6 +773,38 @@
         ]
     },
     {
+        "id": "a7235e146ea29c0f",
+        "type": "debug",
+        "z": "3e745e36ff578044",
+        "name": "debug 34",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "68b763f62a4bf215",
+        "type": "debug",
+        "z": "3e745e36ff578044",
+        "name": "debug 36",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 180,
+        "wires": []
+    },
+    {
         "id": "87d1c7252f8a980e",
         "type": "template",
         "z": "b1813a83246977f7",
@@ -914,7 +849,6 @@
         "wires": [
             [
                 "87d1c7252f8a980e",
-                "47921fd3c88560cf",
                 "98cc2d95c9c2db24"
             ]
         ]
@@ -937,7 +871,6 @@
         "wires": [
             [
                 "87d1c7252f8a980e",
-                "47921fd3c88560cf",
                 "98cc2d95c9c2db24"
             ]
         ]
@@ -966,7 +899,7 @@
         "type": "file",
         "z": "b1813a83246977f7",
         "name": "Unew",
-        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\298\\U",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\300\\U",
         "filenameType": "str",
         "appendNewline": false,
         "createDir": false,
@@ -998,7 +931,6 @@
         "wires": [
             [
                 "0ba63e928eae0a8b",
-                "2cd468e1bf6decba",
                 "98cc2d95c9c2db24"
             ]
         ]
@@ -1029,7 +961,6 @@
         "wires": [
             [
                 "0ba63e928eae0a8b",
-                "2cd468e1bf6decba",
                 "98cc2d95c9c2db24"
             ]
         ]
@@ -1252,7 +1183,7 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 230,
+        "x": 190,
         "y": 960,
         "wires": [
             [
@@ -1353,7 +1284,7 @@
         "type": "file in",
         "z": "b1813a83246977f7",
         "name": "Temperature",
-        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\298\\T",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\300\\T",
         "filenameType": "str",
         "format": "utf8",
         "chunk": false,
@@ -1407,7 +1338,7 @@
         "type": "file",
         "z": "b1813a83246977f7",
         "name": "Tnew",
-        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\298\\T",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\300\\T",
         "filenameType": "str",
         "appendNewline": false,
         "createDir": false,
@@ -1500,14 +1431,14 @@
         "type": "file in",
         "z": "b1813a83246977f7",
         "name": "Velocity",
-        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\298\\U",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\300\\U",
         "filenameType": "str",
         "format": "utf8",
         "chunk": false,
         "sendError": false,
         "encoding": "none",
         "allProps": false,
-        "x": 500,
+        "x": 540,
         "y": 540,
         "wires": [
             [
@@ -1704,13 +1635,13 @@
         "joinerType": "str",
         "accumulate": false,
         "timeout": "",
-        "count": "2",
+        "count": "3",
         "reduceRight": false,
         "reduceExp": "",
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 520,
+        "x": 530,
         "y": 440,
         "wires": [
             [
@@ -1726,6 +1657,136 @@
         "info": "Connects to the mainflow",
         "x": 630,
         "y": 380,
+        "wires": []
+    },
+    {
+        "id": "a7de2143765dfa6f",
+        "type": "inject",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "sim_control_mesh",
+        "payload": "HE22",
+        "payloadType": "str",
+        "x": 170,
+        "y": 740,
+        "wires": [
+            [
+                "47492cfe4607cde3",
+                "98cc2d95c9c2db24"
+            ]
+        ]
+    },
+    {
+        "id": "670a78077874f71f",
+        "type": "mqtt in",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "topic": "sim_control_mesh",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "3e23a6fd421c4e41",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 820,
+        "wires": [
+            [
+                "47492cfe4607cde3",
+                "98cc2d95c9c2db24",
+                "8f7432d09492931e"
+            ]
+        ]
+    },
+    {
+        "id": "47492cfe4607cde3",
+        "type": "template",
+        "z": "b1813a83246977f7",
+        "name": "Mesh",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "@echo off\nSETLOCAL EnableDelayedExpansion\n\nREM The name of the source folder inside the \"meshes\" directory\nSET \"sourceFolderName={{payload}}\"\n\nREM The path to the \"meshes\" directory\nSET \"meshesPath=%~dp0meshes\"\n\nREM The path to the \"constant\" directory\nSET \"constantPath=%~dp0constant\"\n\nREM Full path to the source folder\nSET \"fullSourcePath=!meshesPath!\\!sourceFolderName!\"\n\nREM Full path to the destination \"polyMesh\" folder\nSET \"polyMeshPath=!constantPath!\\polyMesh\"\n\nREM Path to the \"300\" folder inside the \"latestTime\" directory\nSET \"latestTimePath=%~dp0latestTime\\!sourceFolderName!\\300\"\n\nREM Path to the \"300\" folder in the script's directory\nSET \"destination300Path=%~dp0300\"\n\nREM Check if the source folder exists\nIF NOT EXIST \"!fullSourcePath!\" (\n    echo Source folder \"!fullSourcePath!\" does not exist.\n    exit /b\n)\n\nREM Remove the existing \"polyMesh\" folder if it exists\nIF EXIST \"!polyMeshPath!\" (\n    echo Removing existing polyMesh folder...\n    RMDIR /S /Q \"!polyMeshPath!\"\n)\n\nREM Copy the contents from the source folder to the \"polyMesh\" folder\necho Copying from \"!fullSourcePath!\" to \"!polyMeshPath!\"...\nXCOPY /E /I \"!fullSourcePath!\" \"!polyMeshPath!\"\n\nREM Check if the \"300\" folder exists in the \"latestTime\" directory\nIF NOT EXIST \"!latestTimePath!\" (\n    echo \"300\" folder \"!latestTimePath!\" does not exist.\n    exit /b\n)\n\nREM Remove the existing \"300\" folder in the script's directory if it exists\nIF EXIST \"!destination300Path!\" (\n    echo Removing existing \"300\" folder in the script's directory...\n    RMDIR /S /Q \"!destination300Path!\"\n)\n\nREM Copy the \"300\" folder from the \"latestTime\" directory to the script's directory\necho Copying from \"!latestTimePath!\" to \"!destination300Path!\"...\nXCOPY /E /I \"!latestTimePath!\" \"!destination300Path!\"\n\necho Done.\nENDLOCAL\n",
+        "output": "str",
+        "x": 490,
+        "y": 740,
+        "wires": [
+            [
+                "edf7298cf382540b"
+            ]
+        ]
+    },
+    {
+        "id": "edf7298cf382540b",
+        "type": "file",
+        "z": "b1813a83246977f7",
+        "name": "Mnew",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\meshes.bat",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "ascii",
+        "x": 690,
+        "y": 740,
+        "wires": [
+            [
+                "2b027b1fa9fc7aee"
+            ]
+        ]
+    },
+    {
+        "id": "2b027b1fa9fc7aee",
+        "type": "exec",
+        "z": "b1813a83246977f7",
+        "command": "\"C:/Users/XR-Lab/Documents/Jeswin Files/Project HoloCFD/openfoamdocker/jeswin_test1/meshes.bat\" ",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "true",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "meshes.bat",
+        "x": 890,
+        "y": 740,
+        "wires": [
+            [],
+            [],
+            [
+                "2cd468e1bf6decba",
+                "47921fd3c88560cf"
+            ]
+        ]
+    },
+    {
+        "id": "8f7432d09492931e",
+        "type": "debug",
+        "z": "b1813a83246977f7",
+        "name": "debug 35",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 840,
         "wires": []
     },
     {

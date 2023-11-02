@@ -9,7 +9,7 @@ cleanAuxiliary
 deleteFolders() {
     for dir in */; do
         dirname=$(basename "$dir")
-        if [ "$dirname" != "0" ] && [ "$dirname" != "298" ] && [ "$dirname" != "system" ] && [ "$dirname" != "constant" ]; then
+        if [ "$dirname" != "0" ] && [ "$dirname" != "300" ] && [ "$dirname" != "system" ] && [ "$dirname" != "constant" ] && [ "$dirname" != "meshes" ]&& [ "$dirname" != "latestTime" ]; then
             echo "Deleting directory: $dir"
             if rm -rf "$dir"; then
                 echo "Directory $dir deleted successfully."

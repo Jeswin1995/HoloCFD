@@ -12,7 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _COLORCOLOR_ON
+  - _ALPHAPREMULTIPLY_ON
   m_InvalidKeywords:
   - _DIRECTIONAL_LIGHT
   - _DISABLE_ALBEDO_MAP
@@ -21,8 +21,9 @@ Material:
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
   disabledShaderPasses:
   - GRABPASS
   m_LockedProperties: _Metallic _MetallicGlossMap
@@ -113,7 +114,7 @@ Material:
     - _CameraNearFadeDistance: 1
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
-    - _ColorMode: 4
+    - _ColorMode: 0
     - _ColorWriteMask: 15
     - _Cull: 2
     - _CullMode: 2
@@ -125,7 +126,7 @@ Material:
     - _DistortionEnabled: 0
     - _DistortionStrength: 1
     - _DistortionStrengthScaled: 0.1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EdgeSmoothingValue: 0.002
     - _EmissionEnabled: 0
     - _EnableChannelMap: 0
@@ -160,7 +161,7 @@ Material:
     - _LightingEnabled: 0
     - _Metallic: 0
     - _MipmapBias: -2
-    - _Mode: 0
+    - _Mode: 3
     - _NearLightFade: 0
     - _NearPlaneFade: 0
     - _NormalMapScale: 1
@@ -201,12 +202,12 @@ Material:
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0
     - _ZTest: 4
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _ClippingBorderColor: {r: 1, g: 0.19999996, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
+    - _ColorAddSubDiff: {r: -1, g: 1, b: 0, a: 0}
     - _EmisColor: {r: 0.15794471, g: 0.16063312, b: 0.20754719, a: 0}
     - _Emission: {r: 0.23653132, g: 0.320897, b: 0.6320754, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
