@@ -17,7 +17,6 @@ import_format_blender = export_format_paraview
 exportBlender = 'glb'  # Define the export format for Blender
 export_format_blender = '.' + exportBlender
 #create a directory to collect processed data and metadata
-statefile = "reference_velocity.py"
 path_metadata = 'process/metadata/'
 os.makedirs(path_metadata, exist_ok=True)
 path_paraview = os.getcwd() + '/' + path_metadata
@@ -50,7 +49,7 @@ for item in obj_list:
             print(obj.name)
         
     
-    bpy.ops.export_scene.gltf(filepath=path_blender + '240+0.05+HE12' + export_format_blender, export_format='GLB', use_selection=True,export_tangents=True, export_attributes=True,) 
+    bpy.ops.export_scene.gltf(filepath=path_blender + '1000+0.1+HE24+U' + export_format_blender, export_format='GLB', use_selection=True,export_tangents=True, export_attributes=True,) 
     print("Done")   
 
 """

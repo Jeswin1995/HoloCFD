@@ -16,14 +16,6 @@
         "env": []
     },
     {
-        "id": "be1b3ebbdcfed87f",
-        "type": "tab",
-        "label": "Flow 1",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
         "id": "f633a238518a1779",
         "type": "mqtt-broker",
         "name": "",
@@ -140,8 +132,7 @@
             [],
             [],
             [
-                "05ec4df4693454af",
-                "f367a87adee8a1e0"
+                "05ec4df4693454af"
             ]
         ]
     },
@@ -163,8 +154,7 @@
             [],
             [],
             [
-                "1f03ba64af029a15",
-                "f367a87adee8a1e0"
+                "4d9a081c12c0376c"
             ]
         ]
     },
@@ -198,27 +188,6 @@
         ]
     },
     {
-        "id": "73c2b586b8127f37",
-        "type": "mqtt in",
-        "z": "3e745e36ff578044",
-        "name": "",
-        "topic": "sim_start",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "3e23a6fd421c4e41",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 120,
-        "y": 140,
-        "wires": [
-            [
-                "840dd2f7c1175677"
-            ]
-        ]
-    },
-    {
         "id": "d9da75269833ea55",
         "type": "mqtt in",
         "z": "3e745e36ff578044",
@@ -244,15 +213,15 @@
         "type": "debug",
         "z": "3e745e36ff578044",
         "name": "debug 1",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1140,
-        "y": 280,
+        "x": 1360,
+        "y": 140,
         "wires": []
     },
     {
@@ -260,7 +229,7 @@
         "type": "debug",
         "z": "3e745e36ff578044",
         "name": "debug 20",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -286,16 +255,10 @@
         "x": 750,
         "y": 80,
         "wires": [
+            [],
+            [],
             [
-                "68b763f62a4bf215"
-            ],
-            [
-                "68b763f62a4bf215"
-            ],
-            [
-                "02488c6ed8f21066",
-                "f367a87adee8a1e0",
-                "68b763f62a4bf215"
+                "76ad315c9c659434"
             ]
         ]
     },
@@ -311,20 +274,16 @@
         "winHide": false,
         "oldrc": false,
         "name": "TesselateBlender",
-        "x": 970,
+        "x": 1010,
         "y": 80,
         "wires": [
             [
                 "573230bd4a09471a"
             ],
+            [],
             [
-                "573230bd4a09471a"
-            ],
-            [
-                "573230bd4a09471a",
-                "cfe683cfcff78abc",
-                "f367a87adee8a1e0",
-                "bf84947ea715a0a2"
+                "bf84947ea715a0a2",
+                "a1db41850ea0bf01"
             ]
         ]
     },
@@ -358,172 +317,6 @@
         ]
     },
     {
-        "id": "9b6c0b448e2df970",
-        "type": "link in",
-        "z": "3e745e36ff578044",
-        "name": "link in 1",
-        "links": [
-            "400b1318e0bbe831"
-        ],
-        "x": 85,
-        "y": 420,
-        "wires": [
-            [
-                "be820ec65d9161e8"
-            ]
-        ]
-    },
-    {
-        "id": "be820ec65d9161e8",
-        "type": "function",
-        "z": "3e745e36ff578044",
-        "name": "function 16",
-        "func": "// Combine the two messages here\nvar combinedPayload = msg.payload.sim_control_temperature + '+' + msg.payload.sim_control_velocity + '+' + msg.payload.sim_control_mesh;\n\n// Send the combined message\nmsg.payload = combinedPayload;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 210,
-        "y": 420,
-        "wires": [
-            [
-                "8886b73b785bf951",
-                "946ac97a2e47b4bb",
-                "02ae16a00b1efcc3",
-                "a7235e146ea29c0f"
-            ]
-        ]
-    },
-    {
-        "id": "8886b73b785bf951",
-        "type": "template",
-        "z": "3e745e36ff578044",
-        "name": "",
-        "field": "payload",
-        "fieldType": "msg",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "import bpy\nimport os\nfrom distutils.dir_util import copy_tree\nimport timeit\nimport glob\nimport shutil\n\n#start2 = timeit.default_timer()\n#data format to export visual CFD data from ParaView: x3d, vrml, svg and other supported formats\n#(optional) exportParaview = input ('Enter the export format from ParaView: ')\nexportParaview = 'x3d'\nexport_format_paraview = '.' + exportParaview\n\nimport_format_blender = export_format_paraview\n#data format to export visual CFD data from Blender: fbx, obj, 3ds, ply, stl and other supported formats\n\nexportBlender = 'glb'  # Define the export format for Blender\nexport_format_blender = '.' + exportBlender\n#create a directory to collect processed data and metadata\nstatefile = \"reference_velocity.py\"\npath_metadata = 'process/metadata/'\nos.makedirs(path_metadata, exist_ok=True)\npath_paraview = os.getcwd() + '/' + path_metadata\npath_blender = path_paraview\npath_unityfor = os.getcwd() + '/' + 'process/'\n# Loop through all objects in the scene\n#blender starts metadata import & export\npath_to_obj_dir = os.path.join(path_blender)\n#get list of all files in directory\nfile_list = sorted(os.listdir(path_to_obj_dir))\n#get a list of files ending in 'obj' in Blender\nobj_list = [item for item in file_list if item.endswith(import_format_blender)]\n#loop through the strings in obj_list and add the files to the scene\nfor item in obj_list:\n    path_to_file = os.path.join(path_to_obj_dir, item)\n    bpy.ops.import_scene.x3d(filepath = path_to_file)\n    #get the current path and make a new folder for the exported meshes\n    path_blender = bpy.path.abspath(path_blender)\n    # Get a reference to the current active scene\n    scene = bpy.context.scene\n    for obj in scene.objects:\n        bpy.ops.object.select_all(action='DESELECT') #to deselect all meshes\n        # Select the current object\n\n        # Check if the object name starts with \"Shape_IndexedFaceSet\"\n        #if obj.name.startswith(\"Shape_IndexedFaceSet\"):\n        if obj.name != \"Cube\":\n            # Select the object\n            obj.select_set(True)\n            print(obj.name)\n        \n    \n    bpy.ops.export_scene.gltf(filepath=path_blender + '{{payload}}' + export_format_blender, export_format='GLB', use_selection=True,export_tangents=True, export_attributes=True,) \n    print(\"Done\")   \n\n\"\"\"\nData processing analytics for qualitative studies (3)\n\"\"\"\n        \npath_to_obj_dir = os.path.join(path_blender)\nfile_list = sorted(os.listdir(path_to_obj_dir))\nobj_list = [item for item in file_list if item.endswith('.glb')]\nsize_file_blender = []\nfor item in obj_list:\n    path_to_file = os.path.join(path_to_obj_dir, item)\n    size_processing_blender=os.path.getsize(path_to_file)\n    print('GLB file sizes in bytes:',size_processing_blender)\n    size_file_blender.append(size_processing_blender)\n    shutil.copy(path_to_file, os.getcwd() + '/' + 'ExpressServer/ABs/')\n    cloud_path = r\"Z:\\TestCFD\"\n    shutil.copy(path_to_file, cloud_path)\n\nprint('Data processing has successfully been completed!')\n\n#clean up metadata \n#metadata = input ('Clean all metadata? [y or n]: ')\nmetadata = \"y\"\nmypath = path_paraview\nif metadata == 'y':\n    for mydata in glob.glob(mypath + \"Shape*\"):\n        shutil.copy(mydata, os.getcwd() + '/' + 'process/')\n    for metadata in glob.glob(mypath + \"*\"):\n        os.remove(metadata)\n    print ('Metadata is cleaned.')\nelse:\n    print ('Metadata is available under the process directory.')\n#self.text_comments.insert('end', open(filename,'r').read())\n\n\n\n\n\"\"\"\nThe end\n\"\"\"",
-        "output": "str",
-        "x": 380,
-        "y": 420,
-        "wires": [
-            [
-                "01835ba2ef1e25a5"
-            ]
-        ]
-    },
-    {
-        "id": "01835ba2ef1e25a5",
-        "type": "file",
-        "z": "3e745e36ff578044",
-        "name": "TesselateBlender",
-        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\TesselateBlender.py",
-        "filenameType": "str",
-        "appendNewline": false,
-        "createDir": false,
-        "overwriteFile": "true",
-        "encoding": "utf8",
-        "x": 590,
-        "y": 420,
-        "wires": [
-            [
-                "a4cae2ac3d8ea16c"
-            ]
-        ]
-    },
-    {
-        "id": "a974ebe7f8e151a6",
-        "type": "join",
-        "z": "3e745e36ff578044",
-        "name": "",
-        "mode": "custom",
-        "build": "string",
-        "property": "payload",
-        "propertyType": "msg",
-        "key": "topic",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "accumulate": false,
-        "timeout": "",
-        "count": "3",
-        "reduceRight": false,
-        "reduceExp": "",
-        "reduceInit": "",
-        "reduceInitType": "",
-        "reduceFixup": "",
-        "x": 690,
-        "y": 220,
-        "wires": [
-            [
-                "f04603a7df5a3291",
-                "573230bd4a09471a"
-            ]
-        ]
-    },
-    {
-        "id": "1f03ba64af029a15",
-        "type": "change",
-        "z": "3e745e36ff578044",
-        "name": "SimulationDone",
-        "rules": [
-            {
-                "t": "set",
-                "p": "topic",
-                "pt": "msg",
-                "to": "SimulationDone",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 460,
-        "y": 180,
-        "wires": [
-            [
-                "a974ebe7f8e151a6"
-            ]
-        ]
-    },
-    {
-        "id": "a4cae2ac3d8ea16c",
-        "type": "change",
-        "z": "3e745e36ff578044",
-        "name": "NameSet",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "NameChanged",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "topic",
-                "pt": "msg",
-                "to": "NameSet",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 780,
-        "y": 420,
-        "wires": [
-            [
-                "a974ebe7f8e151a6"
-            ]
-        ]
-    },
-    {
         "id": "bf84947ea715a0a2",
         "type": "exec",
         "z": "3e745e36ff578044",
@@ -546,72 +339,21 @@
         ]
     },
     {
-        "id": "70ef5a014ed94e05",
-        "type": "mqtt in",
-        "z": "3e745e36ff578044",
-        "name": "",
-        "topic": "sim_clean",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "3e23a6fd421c4e41",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 840,
-        "y": 660,
-        "wires": [
-            [
-                "4547cff9c1cb21fc"
-            ]
-        ]
-    },
-    {
-        "id": "4547cff9c1cb21fc",
-        "type": "exec",
-        "z": "3e745e36ff578044",
-        "command": "docker exec -w /data/jeswin_test1 openfoam bash -c \"source /usr/lib/openfoam/openfoam2212/etc/bashrc && ./Allclean\"",
-        "addpay": "",
-        "append": "",
-        "useSpawn": "true",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "Allclean",
-        "x": 920,
-        "y": 560,
-        "wires": [
-            [],
-            [],
-            []
-        ]
-    },
-    {
         "id": "4ed0aad7e08a5dc4",
         "type": "link in",
         "z": "3e745e36ff578044",
-        "name": "link in 2",
+        "name": "link in 1",
         "links": [
             "643ffeb4a6cb1432"
         ],
-        "x": 455,
-        "y": 300,
+        "x": 185,
+        "y": 140,
         "wires": [
             [
-                "a974ebe7f8e151a6",
-                "840dd2f7c1175677"
+                "840dd2f7c1175677",
+                "f084791b8f176a99"
             ]
         ]
-    },
-    {
-        "id": "c6ad17e74be41922",
-        "type": "comment",
-        "z": "3e745e36ff578044",
-        "name": "MQTTBeforeFile",
-        "info": "",
-        "x": 160,
-        "y": 320,
-        "wires": []
     },
     {
         "id": "4e44684359a0dd87",
@@ -619,8 +361,8 @@
         "z": "3e745e36ff578044",
         "name": "MQTTAfterfile",
         "info": "AfterFile",
-        "x": 450,
-        "y": 260,
+        "x": 130,
+        "y": 240,
         "wires": []
     },
     {
@@ -637,8 +379,8 @@
         "correl": "",
         "expiry": "",
         "broker": "3e23a6fd421c4e41",
-        "x": 1520,
-        "y": 340,
+        "x": 520,
+        "y": 500,
         "wires": []
     },
     {
@@ -649,7 +391,7 @@
         "rules": [
             {
                 "t": "set",
-                "p": "payload",
+                "p": "topic",
                 "pt": "msg",
                 "to": "Success",
                 "tot": "str"
@@ -660,30 +402,12 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1270,
-        "y": 180,
+        "x": 1530,
+        "y": 200,
         "wires": [
             [
-                "946ac97a2e47b4bb"
-            ]
-        ]
-    },
-    {
-        "id": "f367a87adee8a1e0",
-        "type": "function",
-        "z": "3e745e36ff578044",
-        "name": "function 19",
-        "func": "if (msg.payload.code !== 0) {\n    // The code is not equal to 0, so it's an error\n    msg.payload = \"Error\";\n    return msg;\n} else {\n    // The code is equal to 0, no error\n    return null; // Continue with the original message\n}",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1170,
-        "y": 380,
-        "wires": [
-            [
-                "02ae16a00b1efcc3"
+                "573230bd4a09471a",
+                "17e2ae2dc1d38cdc"
             ]
         ]
     },
@@ -717,92 +441,284 @@
         ]
     },
     {
-        "id": "946ac97a2e47b4bb",
-        "type": "join",
+        "id": "4d9a081c12c0376c",
+        "type": "function",
         "z": "3e745e36ff578044",
-        "name": "",
-        "mode": "custom",
-        "build": "string",
-        "property": "payload",
-        "propertyType": "msg",
-        "key": "topic",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "accumulate": false,
-        "timeout": "",
-        "count": "2",
-        "reduceRight": false,
-        "reduceExp": "",
-        "reduceInit": "",
-        "reduceInitType": "",
-        "reduceFixup": "",
-        "x": 1410,
-        "y": 260,
+        "name": "function 23",
+        "func": "if (msg.payload.code !== 0) {\n    // The code is not equal to 0, so it's an error\n    msg.payload = \"Simulation,Error\";\n    return msg;\n} else {\n    // The code is equal to 0, no error\n    msg.payload = \"Simulation,Success\";\n    return msg; // Continue with the original message\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 200,
         "wires": [
             [
-                "f084791b8f176a99"
+                "f084791b8f176a99",
+                "e42a66e44278f7a4"
             ]
         ]
     },
     {
-        "id": "02ae16a00b1efcc3",
-        "type": "join",
+        "id": "e42a66e44278f7a4",
+        "type": "switch",
         "z": "3e745e36ff578044",
         "name": "",
-        "mode": "custom",
-        "build": "object",
         "property": "payload",
         "propertyType": "msg",
-        "key": "topic",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "accumulate": false,
-        "timeout": "",
-        "count": "2",
-        "reduceRight": false,
-        "reduceExp": "",
-        "reduceInit": "",
-        "reduceInitType": "",
-        "reduceFixup": "",
-        "x": 1330,
-        "y": 360,
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Simulation,Success",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 590,
+        "y": 200,
         "wires": [
             [
-                "f084791b8f176a99"
+                "f04603a7df5a3291"
             ]
         ]
     },
     {
-        "id": "a7235e146ea29c0f",
-        "type": "debug",
+        "id": "dfe606710907fed4",
+        "type": "inject",
         "z": "3e745e36ff578044",
-        "name": "debug 34",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 340,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "68b763f62a4bf215",
-        "type": "debug",
-        "z": "3e745e36ff578044",
-        "name": "debug 36",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 840,
+        "name": "",
+        "props": [
+            {
+                "p": "kill",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
         "y": 180,
-        "wires": []
+        "wires": [
+            [
+                "05ec4df4693454af"
+            ]
+        ]
+    },
+    {
+        "id": "76ad315c9c659434",
+        "type": "function",
+        "z": "3e745e36ff578044",
+        "name": "function 24",
+        "func": "if (msg.payload.code !== 0) {\n    // The code is not equal to 0, so it's an error\n    msg.payload = \"Paraview,Error\";\n    return msg;\n} else {\n    // The code is equal to 0, no error\n    msg.payload = \"Postprocess,Success\";\n    return msg; // Continue with the original message\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 200,
+        "wires": [
+            [
+                "f084791b8f176a99",
+                "b8a12307cb489bb8"
+            ]
+        ]
+    },
+    {
+        "id": "b8a12307cb489bb8",
+        "type": "switch",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Postprocess,Success",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 990,
+        "y": 200,
+        "wires": [
+            [
+                "02488c6ed8f21066"
+            ]
+        ]
+    },
+    {
+        "id": "a1db41850ea0bf01",
+        "type": "function",
+        "z": "3e745e36ff578044",
+        "name": "function 25",
+        "func": "if (msg.payload.code !== 0) {\n    // The code is not equal to 0, so it's an error\n    msg.payload = \"Blender,Error\";\n    return msg;\n} else {\n    // The code is equal to 0, no error\n    msg.payload = \"Cloudupload,Success\";\n    return msg; // Continue with the original message\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1190,
+        "y": 200,
+        "wires": [
+            [
+                "f084791b8f176a99",
+                "26380b3bf84e15a5"
+            ]
+        ]
+    },
+    {
+        "id": "26380b3bf84e15a5",
+        "type": "switch",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Cloudupload,Success",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1350,
+        "y": 200,
+        "wires": [
+            [
+                "cfe683cfcff78abc"
+            ]
+        ]
+    },
+    {
+        "id": "17e2ae2dc1d38cdc",
+        "type": "function",
+        "z": "3e745e36ff578044",
+        "name": "function 26",
+        "func": "// Check the topic and act accordingly\nif (msg.topic === \"filename\") {\n    // Store the payload in the flow context under the key \"filenamePayload\"\n    flow.set(\"filenamePayload\", msg.payload);\n} else if (msg.topic === \"Success\") {\n    // Get the stored payload from the flow context\n    var storedPayload = flow.get(\"filenamePayload\");\n    // Check if there was a stored payload\n    if (storedPayload !== undefined) {\n        // Set the stored payload as the current payload\n        msg.payload = storedPayload + \",\" + \"Success\";\n        // Clear the stored payload from the context\n        flow.set(\"filenamePayload\", undefined);\n        // Return the message to be sent out of the function node\n        return msg;\n    }\n}\n// If the conditions are not met, return null to prevent the node from sending a message\nreturn null;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1670,
+        "y": 280,
+        "wires": [
+            [
+                "f084791b8f176a99"
+            ]
+        ]
+    },
+    {
+        "id": "0b699531b271db04",
+        "type": "link in",
+        "z": "3e745e36ff578044",
+        "name": "link in 2",
+        "links": [
+            "554c3e359c5104e7"
+        ],
+        "x": 1325,
+        "y": 280,
+        "wires": [
+            [
+                "a401450fd7d1a8d4"
+            ]
+        ]
+    },
+    {
+        "id": "a401450fd7d1a8d4",
+        "type": "change",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "filename",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1450,
+        "y": 280,
+        "wires": [
+            [
+                "17e2ae2dc1d38cdc"
+            ]
+        ]
+    },
+    {
+        "id": "82f6633d44908fdf",
+        "type": "inject",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "558+0.05+HE12+T",
+        "payloadType": "str",
+        "x": 1310,
+        "y": 320,
+        "wires": [
+            [
+                "a401450fd7d1a8d4"
+            ]
+        ]
+    },
+    {
+        "id": "649fa3533d44d75c",
+        "type": "inject",
+        "z": "3e745e36ff578044",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1680,
+        "y": 100,
+        "wires": [
+            [
+                "cfe683cfcff78abc"
+            ]
+        ]
     },
     {
         "id": "87d1c7252f8a980e",
@@ -842,7 +758,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "sim_control_temperature",
-        "payload": "600",
+        "payload": "500",
         "payloadType": "str",
         "x": 160,
         "y": 260,
@@ -954,7 +870,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "sim_control_velocity",
-        "payload": "0.06",
+        "payload": "0.05",
         "payloadType": "str",
         "x": 150,
         "y": 540,
@@ -1069,149 +985,6 @@
         ]
     },
     {
-        "id": "68547468c5fe4e11",
-        "type": "file in",
-        "z": "b1813a83246977f7",
-        "name": "U",
-        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\0\\U",
-        "filenameType": "str",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "ascii",
-        "allProps": false,
-        "x": 450,
-        "y": 940,
-        "wires": [
-            [
-                "0fb8f005ac408b62"
-            ]
-        ]
-    },
-    {
-        "id": "f80dfdd160191df5",
-        "type": "file",
-        "z": "b1813a83246977f7",
-        "name": "Tnew",
-        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\jeswin_test1\\0\\U",
-        "filenameType": "str",
-        "appendNewline": false,
-        "createDir": false,
-        "overwriteFile": "true",
-        "encoding": "ascii",
-        "x": 1010,
-        "y": 940,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "5b563850936c4c7b",
-        "type": "debug",
-        "z": "b1813a83246977f7",
-        "name": "debug 30",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 900,
-        "y": 1080,
-        "wires": []
-    },
-    {
-        "id": "28b5a483e7b32657",
-        "type": "function",
-        "z": "b1813a83246977f7",
-        "name": "function 13",
-        "func": "// Assuming msg.payload contains the content of the file\n// Set the \"endTime\" value to 300\nvar InletU = msg.payload.InletU;\n\n\nvar modifiedContent = msg.payload.sim_control_velocity.replace(/inlet\\s*\\n\\s*\\{\\s*\\n\\s*type\\s*fixedValue;(.*)value\\s*uniform \\(0 0.05 0\\);/s, \"inlet\\n    {\\n        type            fixedValue;\\n        value     uniform  (0 \" + InletU + \" 0) ;\");\n\n\n\n\n// Update the payload with the modified content\nmsg.payload = modifiedContent;\n\n// Return the modified content\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 840,
-        "y": 940,
-        "wires": [
-            [
-                "f80dfdd160191df5"
-            ]
-        ]
-    },
-    {
-        "id": "0fb8f005ac408b62",
-        "type": "join",
-        "z": "b1813a83246977f7",
-        "name": "",
-        "mode": "custom",
-        "build": "object",
-        "property": "payload",
-        "propertyType": "msg",
-        "key": "topic",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "accumulate": false,
-        "timeout": "",
-        "count": "2",
-        "reduceRight": false,
-        "reduceExp": "",
-        "reduceInit": "",
-        "reduceInitType": "num",
-        "reduceFixup": "",
-        "x": 590,
-        "y": 1040,
-        "wires": [
-            [
-                "28b5a483e7b32657",
-                "5b563850936c4c7b"
-            ]
-        ]
-    },
-    {
-        "id": "65a19131c5dcd605",
-        "type": "mqtt in",
-        "z": "b1813a83246977f7",
-        "name": "",
-        "topic": "sim_control_velocity_old",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "3e23a6fd421c4e41",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 190,
-        "y": 960,
-        "wires": [
-            [
-                "61a0086a07de46b0",
-                "68547468c5fe4e11"
-            ]
-        ]
-    },
-    {
-        "id": "61a0086a07de46b0",
-        "type": "function",
-        "z": "b1813a83246977f7",
-        "name": "function 14",
-        "func": "msg.topic = \"InletU\";\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 400,
-        "y": 1040,
-        "wires": [
-            [
-                "0fb8f005ac408b62"
-            ]
-        ]
-    },
-    {
         "id": "c7de61dde446d51d",
         "type": "join",
         "z": "b1813a83246977f7",
@@ -1225,18 +998,18 @@
         "joinerType": "str",
         "accumulate": false,
         "timeout": "",
-        "count": "2",
+        "count": "4",
         "reduceRight": false,
         "reduceExp": "",
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 1510,
+        "x": 1710,
         "y": 420,
         "wires": [
             [
-                "643ffeb4a6cb1432",
-                "d30b646f879f28ce"
+                "d30b646f879f28ce",
+                "775b122beb07d83a"
             ]
         ]
     },
@@ -1247,9 +1020,10 @@
         "name": "link out 1",
         "mode": "link",
         "links": [
-            "4ed0aad7e08a5dc4"
+            "4ed0aad7e08a5dc4",
+            "3e66c0df59b8bee2"
         ],
-        "x": 1625,
+        "x": 2065,
         "y": 420,
         "wires": []
     },
@@ -1275,7 +1049,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1640,
+        "x": 1880,
         "y": 600,
         "wires": []
     },
@@ -1609,19 +1383,6 @@
         ]
     },
     {
-        "id": "400b1318e0bbe831",
-        "type": "link out",
-        "z": "b1813a83246977f7",
-        "name": "link out 2",
-        "mode": "link",
-        "links": [
-            "9b6c0b448e2df970"
-        ],
-        "x": 635,
-        "y": 440,
-        "wires": []
-    },
-    {
         "id": "98cc2d95c9c2db24",
         "type": "join",
         "z": "b1813a83246977f7",
@@ -1635,7 +1396,7 @@
         "joinerType": "str",
         "accumulate": false,
         "timeout": "",
-        "count": "3",
+        "count": "4",
         "reduceRight": false,
         "reduceExp": "",
         "reduceInit": "",
@@ -1645,7 +1406,8 @@
         "y": 440,
         "wires": [
             [
-                "400b1318e0bbe831"
+                "147c35fd77dca063",
+                "7b59104580273092"
             ]
         ]
     },
@@ -1790,9 +1552,9 @@
         "wires": []
     },
     {
-        "id": "07b6b243166735b3",
+        "id": "d75802a33d2734ec",
         "type": "inject",
-        "z": "be1b3ebbdcfed87f",
+        "z": "b1813a83246977f7",
         "name": "",
         "props": [
             {
@@ -1807,61 +1569,258 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 160,
-        "y": 140,
+        "topic": "sim_control_postprocess",
+        "payload": "T",
+        "payloadType": "str",
+        "x": 170,
+        "y": 980,
         "wires": [
             [
-                "5982babbde106c6f"
+                "98cc2d95c9c2db24"
             ]
         ]
     },
     {
-        "id": "f8af4bed6bf1f549",
-        "type": "webdav-read",
-        "z": "be1b3ebbdcfed87f",
-        "wname": "",
-        "server": "bd5a391d566dae34",
-        "filename": "515+0.05.glb",
-        "output": "binary",
-        "x": 330,
-        "y": 140,
+        "id": "4c8e54649e3d6ded",
+        "type": "mqtt in",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "topic": "sim_control_postprocess",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "3e23a6fd421c4e41",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 1060,
         "wires": [
             [
-                "5960b6ec42841fd5"
+                "98cc2d95c9c2db24"
             ]
         ]
     },
     {
-        "id": "5960b6ec42841fd5",
-        "type": "debug",
-        "z": "be1b3ebbdcfed87f",
-        "name": "debug 33",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 500,
-        "y": 140,
+        "id": "147c35fd77dca063",
+        "type": "function",
+        "z": "b1813a83246977f7",
+        "name": "FilenameChange",
+        "func": "// Combine the two messages here\nvar combinedPayload = msg.payload.sim_control_temperature + '+' + msg.payload.sim_control_velocity + '+' + msg.payload.sim_control_mesh + '+' + msg.payload.sim_control_postprocess;\n\n// Send the combined message\nmsg.payload = combinedPayload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 420,
+        "wires": [
+            [
+                "a8251146f020b07f",
+                "554c3e359c5104e7"
+            ]
+        ]
+    },
+    {
+        "id": "7b59104580273092",
+        "type": "function",
+        "z": "b1813a83246977f7",
+        "name": "PostprocessChange",
+        "func": "// Combine the two messages here\nvar combinedPayload = msg.payload.sim_control_postprocess;\n\n// Send the combined message\nmsg.payload = combinedPayload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 480,
+        "wires": [
+            [
+                "b84a83f22a4aaae5"
+            ]
+        ]
+    },
+    {
+        "id": "a8251146f020b07f",
+        "type": "template",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "import bpy\nimport os\nfrom distutils.dir_util import copy_tree\nimport timeit\nimport glob\nimport shutil\n\n#start2 = timeit.default_timer()\n#data format to export visual CFD data from ParaView: x3d, vrml, svg and other supported formats\n#(optional) exportParaview = input ('Enter the export format from ParaView: ')\nexportParaview = 'x3d'\nexport_format_paraview = '.' + exportParaview\n\nimport_format_blender = export_format_paraview\n#data format to export visual CFD data from Blender: fbx, obj, 3ds, ply, stl and other supported formats\n\nexportBlender = 'glb'  # Define the export format for Blender\nexport_format_blender = '.' + exportBlender\n#create a directory to collect processed data and metadata\npath_metadata = 'process/metadata/'\nos.makedirs(path_metadata, exist_ok=True)\npath_paraview = os.getcwd() + '/' + path_metadata\npath_blender = path_paraview\npath_unityfor = os.getcwd() + '/' + 'process/'\n# Loop through all objects in the scene\n#blender starts metadata import & export\npath_to_obj_dir = os.path.join(path_blender)\n#get list of all files in directory\nfile_list = sorted(os.listdir(path_to_obj_dir))\n#get a list of files ending in 'obj' in Blender\nobj_list = [item for item in file_list if item.endswith(import_format_blender)]\n#loop through the strings in obj_list and add the files to the scene\nfor item in obj_list:\n    path_to_file = os.path.join(path_to_obj_dir, item)\n    bpy.ops.import_scene.x3d(filepath = path_to_file)\n    #get the current path and make a new folder for the exported meshes\n    path_blender = bpy.path.abspath(path_blender)\n    # Get a reference to the current active scene\n    scene = bpy.context.scene\n    for obj in scene.objects:\n        bpy.ops.object.select_all(action='DESELECT') #to deselect all meshes\n        # Select the current object\n\n        # Check if the object name starts with \"Shape_IndexedFaceSet\"\n        #if obj.name.startswith(\"Shape_IndexedFaceSet\"):\n        if obj.name != \"Cube\":\n            # Select the object\n            obj.select_set(True)\n            print(obj.name)\n        \n    \n    bpy.ops.export_scene.gltf(filepath=path_blender + '{{payload}}' + export_format_blender, export_format='GLB', use_selection=True,export_tangents=True, export_attributes=True,) \n    print(\"Done\")   \n\n\"\"\"\nData processing analytics for qualitative studies (3)\n\"\"\"\n        \npath_to_obj_dir = os.path.join(path_blender)\nfile_list = sorted(os.listdir(path_to_obj_dir))\nobj_list = [item for item in file_list if item.endswith('.glb')]\nsize_file_blender = []\nfor item in obj_list:\n    path_to_file = os.path.join(path_to_obj_dir, item)\n    size_processing_blender=os.path.getsize(path_to_file)\n    print('GLB file sizes in bytes:',size_processing_blender)\n    size_file_blender.append(size_processing_blender)\n    shutil.copy(path_to_file, os.getcwd() + '/' + 'ExpressServer/ABs/')\n    cloud_path = r\"Z:\\TestCFD\"\n    shutil.copy(path_to_file, cloud_path)\n\nprint('Data processing has successfully been completed!')\n\n#clean up metadata \n#metadata = input ('Clean all metadata? [y or n]: ')\nmetadata = \"y\"\nmypath = path_paraview\nif metadata == 'y':\n    for mydata in glob.glob(mypath + \"Shape*\"):\n        shutil.copy(mydata, os.getcwd() + '/' + 'process/')\n    for metadata in glob.glob(mypath + \"*\"):\n        os.remove(metadata)\n    print ('Metadata is cleaned.')\nelse:\n    print ('Metadata is available under the process directory.')\n#self.text_comments.insert('end', open(filename,'r').read())\n\n\n\n\n\"\"\"\nThe end\n\"\"\"",
+        "output": "str",
+        "x": 1000,
+        "y": 420,
+        "wires": [
+            [
+                "a80305285b740241"
+            ]
+        ]
+    },
+    {
+        "id": "b84a83f22a4aaae5",
+        "type": "template",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "import os\nimport sys\nimport timeit\nimport glob\nimport shutil\nfrom distutils.dir_util import copy_tree\nfrom paraview.simple import *\n\n#start2 = timeit.default_timer()\n#data format to export visual CFD data from ParaView: x3d, vrml, svg and other supported formats\n#(optional) exportParaview = input ('Enter the export format from ParaView: ')\nexportParaview = 'x3d'\nexport_format_paraview = '.' + exportParaview\n\nimport_format_blender = export_format_paraview\n#data format to export visual CFD data from Blender: fbx, obj, 3ds, ply, stl and other supported formats\n\nexportBlender = 'glb'  # Define the export format for Blender\nexport_format_blender = '.' + exportBlender\n#create a directory to collect processed data and metadata\nstatefile = \"{{payload}}.py\"\npath_metadata = 'process/metadata/'\nos.makedirs(path_metadata, exist_ok=True)\npath_paraview = os.getcwd() + '/' + path_metadata\npath_blender = path_paraview\npath_unityfor = os.getcwd() + '/' + 'process/'\n\n# Logging of operations from terminal and save in a text file\nclass Tee(object):\n    def __init__(self, *files):\n        self.files = files\n\n    def write(self, obj):\n        for f in self.files:\n            f.write(obj)\n            f.flush()  # If you want the output to be visible immediately\n\n    def flush(self):\n        for f in self.files:\n            f.flush()\n\nf = open('logfile_tessellate.txt', 'w')\noriginal = sys.stdout\nsys.stdout = Tee(sys.stdout, f)\nprint(\"Data processing is in progress...\")\n\n# ParaView state file operation\n# Timer for each section - data processing speed\nstart1 = timeit.default_timer()\n# Import user-defined Paraview state\nexec(open(statefile).read())\n\n# Update the view to ensure updated data information\nrenderView1 = GetActiveViewOrCreate('RenderView')\nrenderView1.Update()\nstop1 = timeit.default_timer()\n\n# Data processing via ParaView pipeline\nstart2 = timeit.default_timer()\n# Create a directory to collect processed data and metadata\nos.makedirs(path_paraview, exist_ok=True)\n\n# Define the total number of timesteps (1 for steady-state solutions)\ntimestep_sim = 2\n\n# Obtain a list of timesteps with values\nanimationScene1 = GetAnimationScene()\ntsteps = animationScene1.TimeKeeper.TimestepValues\n# Check if tsteps is a single float value or a list/array\nif isinstance(tsteps, float):\n    # If it's a float, make it a list with one element\n    tsteps = [tsteps]\n\n# Now you can safely access the last element\nanimationScene1.AnimationTime = tsteps[-1]\nanimationScene1.AnimationTime = tsteps[-1]\n# ParaView metadata export\nExportView(path_paraview + str(tsteps[-1]) + export_format_paraview, view=renderView1, ExportColorLegends=1)\n\n\n# for x in range(0, timestep_sim):\n#     # ParaView metadata export\n#     ExportView(path_paraview + str(x) + export_format_paraview, view=renderView1, ExportColorLegends=1)\n#     # Check out the data processed\n#     SaveScreenshot(path_paraview + str(x) + '.png', renderView1, ImageResolution=[1025, 782])\n#     # Switch to the next timestep\n#     animationScene1 = GetAnimationScene()\n#     animationScene1.AnimationTime = tsteps[-1]\nstop2 = timeit.default_timer()\n\n\"\"\"\nData processing analytics for qualitative studies (3)\n\"\"\"\n        \n#b_x3d = os.path.getsize(path_blender + tsteps[-1]+'.x3d')\nprint('*****Data processing performance & analytics*****')\nprint('Time_ParaView: ', stop1 - start1)\n#print('X3D file size in bytes:',b_x3d)\nprint('Time_ParaView_Blender: ', stop2 - start2)\nprint('Time_Integration (sec): ', stop2 - start2 + stop1 - start1)",
+        "output": "str",
+        "x": 1000,
+        "y": 480,
+        "wires": [
+            [
+                "8ca60a73f8ba9341"
+            ]
+        ]
+    },
+    {
+        "id": "a80305285b740241",
+        "type": "file",
+        "z": "b1813a83246977f7",
+        "name": "TesselateBlender",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\TesselateBlender.py",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "utf8",
+        "x": 1210,
+        "y": 420,
+        "wires": [
+            [
+                "52bf8058d89ca1de"
+            ]
+        ]
+    },
+    {
+        "id": "8ca60a73f8ba9341",
+        "type": "file",
+        "z": "b1813a83246977f7",
+        "name": "TesselateParaview",
+        "filename": "C:\\Users\\XR-Lab\\Documents\\Jeswin Files\\Project HoloCFD\\openfoamdocker\\TesselateParaview.py",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "utf8",
+        "x": 1210,
+        "y": 480,
+        "wires": [
+            [
+                "0fb6e667a1a1d3c5"
+            ]
+        ]
+    },
+    {
+        "id": "0fb6e667a1a1d3c5",
+        "type": "change",
+        "z": "b1813a83246977f7",
+        "name": "NameSet",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Postprocesschanged",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "PostprocessChangedNameSet",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1400,
+        "y": 480,
+        "wires": [
+            [
+                "c7de61dde446d51d"
+            ]
+        ]
+    },
+    {
+        "id": "52bf8058d89ca1de",
+        "type": "change",
+        "z": "b1813a83246977f7",
+        "name": "NameSet",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "NameChanged",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "NameSet",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1400,
+        "y": 420,
+        "wires": [
+            [
+                "c7de61dde446d51d"
+            ]
+        ]
+    },
+    {
+        "id": "554c3e359c5104e7",
+        "type": "link out",
+        "z": "b1813a83246977f7",
+        "name": "filename",
+        "mode": "link",
+        "links": [
+            "0b699531b271db04"
+        ],
+        "x": 1005,
+        "y": 360,
         "wires": []
     },
     {
-        "id": "5982babbde106c6f",
-        "type": "nextcloud-webdav-out",
-        "z": "be1b3ebbdcfed87f",
-        "wname": "",
-        "server": "ad4a3b3c95053afd",
-        "filename": "/TestCFD/515+0.05.glb",
-        "x": 330,
-        "y": 220,
+        "id": "775b122beb07d83a",
+        "type": "change",
+        "z": "b1813a83246977f7",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Preconfig,Success",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1900,
+        "y": 420,
         "wires": [
             [
-                "5960b6ec42841fd5"
+                "643ffeb4a6cb1432"
             ]
         ]
     }

@@ -16,12 +16,12 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-surfaceFile     "HE12.stl";
+surfaceFile     "HE24.stl";
 
 surfaceMeta
 {
-    nPoints         732;
-    nFacets         1420;
+    nPoints         1140;
+    nFacets         2224;
     nPatches        5;
     nFeatureEdges   0;
     patches
@@ -39,7 +39,7 @@ surfaceMeta
         pipe
         {
             type            empty;
-            nFacets         396;
+            nFacets         792;
         }
         symmetry
         {
@@ -49,7 +49,7 @@ surfaceMeta
         wall
         {
             type            empty;
-            nFacets         916;
+            nFacets         1324;
         }
     }
     pointSubsets

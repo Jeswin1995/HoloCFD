@@ -47,7 +47,7 @@ public class InstantiateFBX : MonoBehaviour
     }
     public void CheckLocalFile()
     {
-        assetName = controller.temperatureSliderValue + "+" + controller.velocitySliderValue + "+" + controller.dropdownValue + ".glb";
+        assetName = controller.temperatureSliderValue + "+" + controller.velocitySliderValue + "+" + controller.dropdown_mesh_Value + "+" + controller.dropdown_postprocessValue + ".glb";
         Debug.Log(assetName);
         // Create a folder inside UWP's local storage
 #if WINDOWS_UWP
@@ -89,7 +89,7 @@ public class InstantiateFBX : MonoBehaviour
             yield return new WaitForSeconds(retryInterval);
             retryCount++;
         }
-        Debug.Log("FileCheckDone");
+        Debug.Log("OnlineCheckDone");
         serverScript.isFileCheckDone = false;
     }
 

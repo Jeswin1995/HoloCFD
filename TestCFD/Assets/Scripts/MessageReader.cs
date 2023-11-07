@@ -1,52 +1,127 @@
 using Microsoft.MixedReality.Toolkit.UI;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class MessageReader : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject indicatorObject;
+    private IProgressIndicator indicator;
+
     public mqttReceiver mqttReceiver; // Reference to the mqttReceiver script
     public Interactable simulateButton;
     private InstantiateFBX instantiateScript;
 
+    private bool isProcessing = false; // Flag to check if processing is ongoing
+
     private void OnEnable()
     {
-        // Subscribe to the OnMessageArrived event
         mqttReceiver.OnMessageArrived += HandleMessage;
         instantiateScript = transform.GetComponent<InstantiateFBX>();
     }
 
     private void OnDisable()
     {
-        // Unsubscribe from the event to prevent memory leaks
-        mqttReceiver.OnMessageArrived -= HandleMessage;
+        if (mqttReceiver != null)
+        {
+            mqttReceiver.OnMessageArrived -= HandleMessage;
+        }
     }
 
-    private void HandleMessage(string newMsg)
+    private async void Start()
     {
-        // Handle the received message here
-        Debug.Log("Received message: " + newMsg);
-        // Split the message by '\n' character
-        string[] messages = newMsg.Split('\n');
+        if (indicatorObject != null)
+        {
+            indicator = indicatorObject.GetComponent<IProgressIndicator>();
+        }
+        else
+        {
+            Debug.LogError("Indicator object is not assigned.");
+        }
+    }
 
+    private async void HandleMessage(string newMsg)
+    {
+        string[] messages = newMsg.Split(new[] { ',' });
         if (messages.Length >= 2)
         {
-            string firstPart = messages[0];
-            string secondPart = messages[1];
-            if (secondPart.Trim() == "Success")
+            string firstPart = messages[0].Trim();
+            string statusPart = messages[1].Trim();
+
+            if (!isProcessing && firstPart == "Preconfig" && statusPart == "Success")
             {
-                // The second part of the message is "Success," so you can use the first part as a parameter for a function
-                instantiateScript.CheckOnline(firstPart + ".glb");
-                if (simulateButton.IsEnabled == false)
-                {
-                    simulateButton.IsEnabled = true;
-                }
+                isProcessing = true; // Set the flag to indicate processing has started
+                await UpdateProgressAsync(); // Start the progress update process
             }
-            else if (secondPart.Trim() == "Error")
+            else if (isProcessing)
             {
-                if (simulateButton.IsEnabled == false)
+                if (statusPart == "Success")
                 {
-                    simulateButton.IsEnabled = true;
+                    // Handle success message and update progress
+                    await UpdateProgressBasedOnMessage(firstPart);
+                }
+                else if (statusPart == "Error")
+                {
+                    // If there's an error, reset the progress and complete the task
+                    CompleteProgressWithError();
                 }
             }
         }
+    }
+
+    private async Task UpdateProgressAsync()
+    {
+        if (indicator != null)
+        {
+            await indicator.OpenAsync();
+            indicator.Progress = 0.1f;
+            indicator.Message = "Simulating...";
+        }
+    }
+
+    private async Task UpdateProgressBasedOnMessage(string part)
+    {
+        if (indicator == null || instantiateScript == null)
+        {
+            return;
+        }
+
+        switch (part)
+        {
+            case "Simulation":
+                indicator.Progress = 0.5f;
+                indicator.Message = "Postprocessing data...";
+                break;
+            case "Postprocess":
+                indicator.Progress = 0.75f;
+                indicator.Message = "Uploading to cloud...";
+                break;
+            case "Cloudupload":
+                indicator.Progress = 0.9f;
+                indicator.Message = "Finishing Up...";
+                break;
+            default:
+                Debug.LogError("Unhandled message part: " + part);
+                indicator.Progress = 1f;
+                indicator.Message = "Loading results";
+                // Call CheckOnline with the appropriate file
+                instantiateScript.CheckOnline(part + ".glb");
+                await indicator.CloseAsync();
+                isProcessing = false; // Reset the flag
+                simulateButton.IsEnabled = true;
+                return;  
+        }
+    }
+
+    private async void CompleteProgressWithError()
+    {
+        if (indicator != null)
+        {
+            indicator.Progress = 0;
+            indicator.Message = "Error occurred. Resetting progress...";
+            await indicator.CloseAsync();
+        }
+        isProcessing = false; // Reset the flag
+        simulateButton.IsEnabled = true;
     }
 }

@@ -18,14 +18,12 @@ import_format_blender = export_format_paraview
 exportBlender = 'glb'  # Define the export format for Blender
 export_format_blender = '.' + exportBlender
 #create a directory to collect processed data and metadata
-statefile = "reference_velocity.py"
+statefile = "U.py"
 path_metadata = 'process/metadata/'
 os.makedirs(path_metadata, exist_ok=True)
 path_paraview = os.getcwd() + '/' + path_metadata
 path_blender = path_paraview
 path_unityfor = os.getcwd() + '/' + 'process/'
-# Define the state file to be used
-statefile = "reference_velocity.py"  # Replace with your state file
 
 # Logging of operations from terminal and save in a text file
 class Tee(object):

@@ -2,7 +2,7 @@
 SETLOCAL EnableDelayedExpansion
 
 REM The name of the source folder inside the "meshes" directory
-SET "sourceFolderName=HE12"
+SET "sourceFolderName=HE24"
 
 REM The path to the "meshes" directory
 SET "meshesPath=%~dp0meshes"
