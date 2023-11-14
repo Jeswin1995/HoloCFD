@@ -45,12 +45,11 @@ public class sliderTextUpdater : MonoBehaviour
         // Perform different calculations based on the selected measurement type
         if (selectedMeasurement == MeasurementType.Velocity)
         {
-            velocityUpdatedValue = eventData.NewValue*0.1f;
+            velocityUpdatedValue = eventData.NewValue*0.10f;
             string velocityUpdatedValueString = velocityUpdatedValue.ToString("F2");
             // Update the TMP Text element with the calculated value
-            textElement.text = velocityUpdatedValueString; // Format the value as desired
+            textElement.text = velocityUpdatedValueString + "m/s"; // Format the value as desired
             onValueChanged.Invoke(velocityUpdatedValueString);
-
         }
         else if (selectedMeasurement == MeasurementType.Temperature)
         {
@@ -58,7 +57,7 @@ public class sliderTextUpdater : MonoBehaviour
             temperatureUpdatedValue = Mathf.RoundToInt(eventData.NewValue*1000f);
             string temperatureUpdatedValueString = temperatureUpdatedValue.ToString();
             // Update the TMP Text element with the calculated value
-            textElement.text = temperatureUpdatedValue.ToString("F2"); // Format the value as desired
+            textElement.text = temperatureUpdatedValue.ToString("F2") + "°C"; // Format the value as desired
             onValueChanged.Invoke(temperatureUpdatedValueString);
         }
         

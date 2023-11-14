@@ -26,6 +26,7 @@ public class InstantiateFBX : MonoBehaviour
     public ButtonController controller;
     private LoadAssetFromServer serverScript;
     public GameObject deleteButtonPrefab;
+    public GameObject axisPrefabObject;
 
     public float retryInterval = 5f; // Adjust the retry interval as needed
     public int maxCount = 10; // Maximum number of retries before giving up
@@ -126,10 +127,39 @@ public class InstantiateFBX : MonoBehaviour
 
             // Assign the model reference to the delete button script
             DeleteButton deleteButtonScript = deleteButton.GetComponent<DeleteButton>();
-            deleteButtonScript.modelToDelete = model;
+            
+            if (deleteButtonScript != null)
+            {
+                deleteButtonScript.modelToDelete = model;
+                // Optionally, you can parent the delete button to the model for easier management
+                deleteButton.transform.parent = model.transform;
+                deleteButtonScript.SetFileNameText(assetName);
+            }
 
-            // Optionally, you can parent the delete button to the model for easier management
-            deleteButton.transform.parent = model.transform;
+            // Instantiate the axis prefab
+            GameObject axisPrefab = Instantiate(axisPrefabObject);
+
+            // Determine the bounds of the model to find a corner position and dimensions
+            Renderer modelRenderer = model.GetComponent<Renderer>();
+            if (modelRenderer != null)
+            {
+                Bounds bounds = modelRenderer.bounds;
+                Vector3 cornerPosition = bounds.min; // This will get one of the corners of the bounding box
+                axisPrefab.transform.position = cornerPosition; // Position the axis at the corner
+
+                // Calculate distances from the axis to the far ends of the model in each direction
+                Vector3 maxDistances = bounds.max - cornerPosition;
+                Vector3 scaleFactors = new Vector3(
+                    maxDistances.x / 2f, // Scale factor for x-axis
+                    maxDistances.y / 2f, // Scale factor for y-axis
+                    maxDistances.z / 2f  // Scale factor for z-axis
+                );
+
+                axisPrefab.transform.localScale = scaleFactors; // Scale the axis prefab
+            }
+
+            // Optionally, you can parent the axis to the model for easier management
+            axisPrefab.transform.parent = model.transform;
         }
         Debug.Log("Load done");
         model.transform.position = spawnPosition;
@@ -139,6 +169,8 @@ public class InstantiateFBX : MonoBehaviour
         model.AddComponent<NearInteractionGrabbable>();
         //File.Delete(saveTo);
     }
+
+
     async Task<GameObject> Load3DModelAsync(string saveTo)
     {
         ImportSettings importSettings = new ImportSettings(); // You can customize import settings here

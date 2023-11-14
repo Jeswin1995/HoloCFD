@@ -53,8 +53,14 @@ public class ButtonController : MonoBehaviour
 
     private void OnDropdownPostprocessValueChanged(int index)
     {
-        // Get the currently selected dropdown_mesh_pipe option
-        dropdown_postprocessValue = dropdown_postprocess.options[dropdown_postprocess.value].text;
+        if (dropdown_postprocess.options[dropdown_postprocess.value].text == "Temperature")
+        {
+            dropdown_postprocessValue = "T";
+        }
+        else if (dropdown_postprocess.options[dropdown_postprocess.value].text == "Velocity")
+        {
+            dropdown_postprocessValue = "U";
+        }
         Debug.Log(dropdown_postprocessValue);
     }
     public IEnumerator OnVelocityChanged()
@@ -91,9 +97,7 @@ public class ButtonController : MonoBehaviour
     }
     private IEnumerator CheckPostprocessDropdownValue()
     {
-        // Check if the value has changed since the last time
-        string messageToSend = dropdown_postprocess.options[dropdown_postprocess.value].text;
-
+        string messageToSend = dropdown_postprocessValue; 
         // Publish the message
         mqttReceiver.GetComponent<MeasurementPublisher>().publishMessage(dropdown_postprocess_Topic, messageToSend);
         Debug.Log("Dropdown value published: " + messageToSend);
