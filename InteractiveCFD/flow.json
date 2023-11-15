@@ -776,7 +776,7 @@
         "name": "",
         "topic": "sim_control_temperature",
         "qos": "2",
-        "datatype": "auto-detect",
+        "datatype": "utf8",
         "broker": "3e23a6fd421c4e41",
         "nl": false,
         "rap": true,
@@ -836,7 +836,7 @@
         "name": "",
         "topic": "sim_control_velocity",
         "qos": "2",
-        "datatype": "auto-detect",
+        "datatype": "utf8",
         "broker": "3e23a6fd421c4e41",
         "nl": false,
         "rap": true,
@@ -1617,7 +1617,8 @@
         "wires": [
             [
                 "a8251146f020b07f",
-                "554c3e359c5104e7"
+                "554c3e359c5104e7",
+                "c076c68f141b6520"
             ]
         ]
     },
@@ -1823,5 +1824,21 @@
                 "643ffeb4a6cb1432"
             ]
         ]
+    },
+    {
+        "id": "c076c68f141b6520",
+        "type": "debug",
+        "z": "b1813a83246977f7",
+        "name": "debug 36",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
+        "y": 680,
+        "wires": []
     }
 ]

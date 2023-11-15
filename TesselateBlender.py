@@ -49,7 +49,7 @@ for item in obj_list:
             print(obj.name)
         
     
-    bpy.ops.export_scene.gltf(filepath=path_blender + '1000+0.10+HE24+T' + export_format_blender, export_format='GLB', use_selection=True,export_tangents=True, export_attributes=True,) 
+    bpy.ops.export_scene.gltf(filepath=path_blender + '993+0.05+HE24+T' + export_format_blender, export_format='GLB', use_selection=True,export_tangents=True, export_attributes=True,) 
     print("Done")   
 
 """

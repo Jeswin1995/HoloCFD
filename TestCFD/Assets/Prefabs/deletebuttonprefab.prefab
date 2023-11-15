@@ -858,6 +858,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modelToDelete: {fileID: 0}
   fileNameText: {fileID: 4812363155753699344}
+  lowbound: {fileID: 8251231824865276636}
+  highbound: {fileID: 242432063309815116}
 --- !u!1 &114689390034692608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1641,7 +1643,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17.2, y: 48.5}
+  m_AnchoredPosition: {x: 523, y: 207}
   m_SizeDelta: {x: 600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7214358611861183950

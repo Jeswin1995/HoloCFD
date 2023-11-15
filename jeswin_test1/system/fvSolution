@@ -46,7 +46,7 @@ SIMPLE
         T               1e-2;
 
         // possibly check turbulence fields
-        "(k|epsilon|omega)" 1e-3;
+        "(k|epsilon|omega)" 1e-2;
     }
 }
 
